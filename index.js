@@ -10,6 +10,7 @@ const FileStore = require('session-file-store')(session);
 const app = express();
 const server = http.createServer(app);
 
+const { layout } = require('./utils')
 
 const logger = morgan('dev');
 const hostname = '127.0.0.1';
@@ -38,7 +39,12 @@ app.set('view engine', 'html');
 
 
 app.get('/', (req, res) =>{
-    res.send('Your app is running. Start building!')
+    res.render('home', {
+        locals: {
+
+        },
+        ...layout
+    })
 });
 
 //catch all if website doesn't
