@@ -1,4 +1,4 @@
-<p align="center"><tb><img  src="https://visitor-badge.glitch.me/badge?page_id=shoel-uddin.Game-List"/></tb></p>
+<p align="center"><tb><img  src="https://visitor-badge.glitch.me/badge?page_id=shoel-uddin.Gamers_Paradise"/></tb></p>
 
 <h1 align="center"> Gamer's Paradise </h1>
 <br>
@@ -51,7 +51,7 @@
 
 ### Joshua Lopez
 - 
-
+this is a test
 ### Ian Storm
 - 
 
