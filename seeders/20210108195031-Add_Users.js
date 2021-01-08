@@ -1,5 +1,7 @@
 "use strict";
 
+const { now } = require("sequelize/types/lib/utils");
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     /**
@@ -11,26 +13,38 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
      */
-    await queryInterface.bulkInsert("Users", [
+    return await queryInterface.bulkInsert("Users", [
       {
         name: "Josh L",
         username: "jlopez28",
-        email: "jlopez28@gamerparadise.com",
-      },
-      {
-        name: "Sho U",
-        username: "suddin29",
-        email: "suddin29@gamerparadise.com",
+        hash: "$2a$10$z2.xgy/P5CK1CyMXSCEPhuL8ZQzOU3LicQxwpR/gkpwD2Sy53EKvy",
+        email: "jlopez28@gamersparadise.com",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         name: "Ian S",
         username: "istorms30",
-        email: "istorms30@gamerparadise.com",
+        hash: "$2a$10$5lkZFKdEgf6qp.O.nZDK9Ot2RKrtRA4GJO9D49vjQYVXUmdQM46Ry",
+        email: "istorms30@gamersparadise.com",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "Sho U",
+        username: "suddin29",
+        hash: "$2a$10$gCktHc/KASRoxoYltwmAhew3oh9p8wAt5J2yN1lbwA1.9av4FAU/y",
+        email: "suddin29@gamersparadise.com",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         name: "Kevin T",
+        hash: "$2a$10$/d8XOvGpAwdK.x5Sv5R/selO1cLlpwJrZ6bWgyat09uUU3Oc2SASy",
         username: "ktuck31",
-        email: "ktuck31@gamerparadise.com",
+        email: "ktuck31@gamersparadise.com",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
     ]);
   },
@@ -42,6 +56,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    await queryInterface.bulkDelete("Users");
+    return await queryInterface.bulkDelete("Users", null, {});
   },
 };
