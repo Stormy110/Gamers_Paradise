@@ -61,6 +61,7 @@ app.post("/signup", (req, res) => {
     locals: {},
     ...layout,
   });
+    res.redirect('/members')
 });
 
 app.get("/login", (req, res) => {
@@ -71,11 +72,17 @@ app.get("/login", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  res.render("loginPage", {
-    locals: {},
-  });
+//   res.render("loginPage", {
+//     locals: {},
+//   });
+    res.redirect('/members')
 });
 
+app.get("/members", (req, res) => {
+    res.send(`<h1>members page</h1>`)
+    
+});
+  
 //catch all if website doesn't
 app.get("*", (req, res) => {
   res.status(404).send("<h1>Page not found</h1>");
