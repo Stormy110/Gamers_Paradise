@@ -52,7 +52,7 @@
 ### Joshua Lopez
 - 
 this is a test
-### Ian Storm
+### Ian Storms
 - 
 
 ### Kevin Tucker
