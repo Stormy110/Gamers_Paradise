@@ -8,16 +8,15 @@ const session = require("express-session");
 const FileStore = require("session-file-store")(session);
 const app = express();
 const server = http.createServer(app);
-const bcrypt = require('bcryptjs');
-const { User } = require('./models');
-const { requireLogin } = require('./auth')
+const bcrypt = require("bcryptjs");
+const { User } = require("./models");
+const { requireLogin, logout } = require("./auth");
 
-const {
-  layout
-} = require("./utils");
+const { layout } = require("./utils");
 
 const logger = morgan("dev");
 const hostname = "127.0.0.1";
+const port = 3500;
 
 //Register Middleware
 app.use(logger);
@@ -47,16 +46,12 @@ app.engine("html", es6Renderer);
 app.set("views", "templates");
 app.set("view engine", "html");
 
-
 app.get("/", (req, res) => {
   res.render("home", {
     locals: {},
     ...layout,
   });
 });
-
-
-
 
 app.get("/signup", (req, res) => {
   res.render("signUpPage", {
@@ -65,26 +60,21 @@ app.get("/signup", (req, res) => {
   });
 });
 
-app.post("/signup",async (req, res) => {
-  const {
-    username,
-    password,
-    name,
-    email
-  } = req.body;
+app.post("/signup", async (req, res) => {
+  const { username, password, name, email } = req.body;
   const hash = bcrypt.hashSync(password, 10); // auto salt!
   try {
     const newUser = await User.create({
       username,
       hash,
       name,
-      email
+      email,
     });
     console.log(newUser);
 
-    res.redirect('/login');
+    res.redirect("/login");
   } catch (e) {
-    res.send('username is taken');
+    res.send("username is taken");
   }
   // res.render("signUpPage", {
   //   locals: {},
@@ -101,42 +91,36 @@ app.get("/login", (req, res) => {
   });
 });
 
-app.post("/login", async(req, res) => {
-  const {
-    username,
-    password
-  } = req.body;
+app.post("/login", async (req, res) => {
+  const { username, password } = req.body;
 
   // I need to check the database!
   // Is that a valid user?
   const user = await User.findOne({
     where: {
-      username
-    }
+      username,
+    },
   });
   if (user) {
     // Is that their password?
     //res.send('we have a user!');
     const isValid = bcrypt.compareSync(password, user.hash);
     if (isValid) {
-
       req.session.user = {
         username: user.username,
         // username
-        id: user.id
+        id: user.id,
         // id
       };
       req.session.save(() => {
-        res.redirect('/members')
+        res.redirect("/members");
         // res.send('that is totally right!');
       });
-
     } else {
-      res.send('boooo wrong password!');
+      res.send("boooo wrong password!");
     }
-
   } else {
-    res.send('No user with that name!');
+    res.send("No user with that name!");
   }
   //   res.render("loginPage", {
   //     locals: {},
@@ -146,30 +130,27 @@ app.post("/login", async(req, res) => {
 
 app.use(requireLogin);
 
-
 app.get("/members", (req, res) => {
-  const { username } = req.session.user
-  res.render('members', {
+  const { username } = req.session.user;
+  res.render("members", {
     locals: {
-      username
-    
-
-
+      username,
     },
-    ...layout
-  }) 
-
+    ...layout,
+  });
 });
+
+app.get("/logout", logout);
 
 //catch all if website doesn't
 app.get("*", (req, res) => {
   res.status(404).send("<h1>Page not found</h1>");
 });
 
-app.get('/unauthorized', (req, res) => {
+app.get("/unauthorized", (req, res) => {
   res.send("You shall not pass");
 });
 
-server.listen(3500, hostname, () => {
-  console.log("Server running at localhost, port 3500");
+server.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}`);
 });
