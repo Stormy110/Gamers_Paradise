@@ -47,12 +47,16 @@ app.engine("html", es6Renderer);
 app.set("views", "templates");
 app.set("view engine", "html");
 
+
 app.get("/", (req, res) => {
   res.render("home", {
     locals: {},
     ...layout,
   });
 });
+
+
+
 
 app.get("/signup", (req, res) => {
   res.render("signUpPage", {
@@ -142,6 +146,7 @@ app.post("/login", async(req, res) => {
 
 app.use(requireLogin);
 
+
 app.get("/members", (req, res) => {
   const { username } = req.session.user
   res.render('members', {
@@ -159,6 +164,10 @@ app.get("/members", (req, res) => {
 //catch all if website doesn't
 app.get("*", (req, res) => {
   res.status(404).send("<h1>Page not found</h1>");
+});
+
+app.get('/unauthorized', (req, res) => {
+  res.send("You shall not pass");
 });
 
 server.listen(3500, hostname, () => {
