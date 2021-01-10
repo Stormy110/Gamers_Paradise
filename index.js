@@ -10,6 +10,7 @@ const app = express();
 const server = http.createServer(app);
 const bcrypt = require('bcryptjs');
 const { User } = require('./models');
+const { requireLogin } = require('./auth')
 
 const {
   layout
@@ -138,6 +139,8 @@ app.post("/login", async(req, res) => {
   //   });
   // res.redirect('/members')
 });
+
+app.use(requireLogin);
 
 app.get("/members", (req, res) => {
   const { username } = req.session.user
