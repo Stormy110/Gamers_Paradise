@@ -8,8 +8,12 @@ const session = require("express-session");
 const FileStore = require("session-file-store")(session);
 const app = express();
 const server = http.createServer(app);
+const bcrypt = require('bcryptjs');
+const { User } = require('./models');
 
-const { layout } = require("./utils");
+const {
+  layout
+} = require("./utils");
 
 const logger = morgan("dev");
 const hostname = "127.0.0.1";
@@ -56,12 +60,33 @@ app.get("/signup", (req, res) => {
   });
 });
 
-app.post("/signup", (req, res) => {
-  res.render("signUpPage", {
-    locals: {},
-    ...layout,
-  });
-    res.redirect('/members')
+app.post("/signup",async (req, res) => {
+  const {
+    username,
+    password,
+    name,
+    email
+  } = req.body;
+  const hash = bcrypt.hashSync(password, 10); // auto salt!
+  try {
+    const newUser = await User.create({
+      username,
+      hash,
+      name,
+      email
+    });
+    console.log(newUser);
+
+    res.redirect('/login');
+  } catch (e) {
+    res.send('username is taken');
+  }
+  // res.render("signUpPage", {
+  //   locals: {},
+
+  //   ...layout,
+  // });
+  // res.redirect('/members')
 });
 
 app.get("/login", (req, res) => {
@@ -71,18 +96,63 @@ app.get("/login", (req, res) => {
   });
 });
 
-app.post("/login", (req, res) => {
-//   res.render("loginPage", {
-//     locals: {},
-//   });
-    res.redirect('/members')
+app.post("/login", async(req, res) => {
+  const {
+    username,
+    password
+  } = req.body;
+
+  // I need to check the database!
+  // Is that a valid user?
+  const user = await User.findOne({
+    where: {
+      username
+    }
+  });
+  if (user) {
+    // Is that their password?
+    //res.send('we have a user!');
+    const isValid = bcrypt.compareSync(password, user.hash);
+    if (isValid) {
+
+      req.session.user = {
+        username: user.username,
+        // username
+        id: user.id
+        // id
+      };
+      req.session.save(() => {
+        res.redirect('/members')
+        // res.send('that is totally right!');
+      });
+
+    } else {
+      res.send('boooo wrong password!');
+    }
+
+  } else {
+    res.send('No user with that name!');
+  }
+  //   res.render("loginPage", {
+  //     locals: {},
+  //   });
+  // res.redirect('/members')
 });
 
 app.get("/members", (req, res) => {
-    res.send(`<h1>members page</h1>`)
+  const { username } = req.session.user
+  res.render('members', {
+    locals: {
+      username
     
+
+
+    },
+    ...layout
+  }) 
+
 });
-  
+
 //catch all if website doesn't
 app.get("*", (req, res) => {
   res.status(404).send("<h1>Page not found</h1>");
