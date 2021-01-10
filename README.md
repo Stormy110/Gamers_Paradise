@@ -24,11 +24,12 @@
 - HTML
 - CSS
 - Npm
-- EXPRESS
+- ExpressJS
 - AWS
 - JavaScript
 - NodeJS
 - Postgres/SQL
+- SequelizeJS
 
 <br>
 <h2 align="center"> Problems Faced </h2> 

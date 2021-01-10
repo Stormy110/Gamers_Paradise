@@ -53,6 +53,24 @@ app.get("/", (req, res) => {
   });
 });
 
+app.get("/about", (req,res)=>{
+  res.render("about", {
+    locals: {
+      
+    },
+    ...layout
+  })
+});
+
+app.get("/contact", (req,res)=>{
+  res.render("contact", {
+    locals: {
+      
+    },
+    ...layout
+  })
+});
+
 app.get("/signup", (req, res) => {
   res.render("signUpPage", {
     locals: {},
@@ -128,9 +146,29 @@ app.post("/login", async (req, res) => {
   // res.redirect('/members')
 });
 
-app.use(requireLogin);
+// Put the requirelogin function on each route we need instead of having
+// it do every route after the app.use. This way we can more specifically 
+// decide which route to requirelogin to enter 
 
-app.get("/members", (req, res) => {
+app.get("/members-about", requireLogin, (req,res)=>{
+  res.render("members-about", {
+    locals: {
+      
+    },
+    ...layout
+  })
+});
+
+app.get("/members-contact", requireLogin, (req,res)=>{
+  res.render("members-contact", {
+    locals: {
+      
+    },
+    ...layout
+  })
+});
+
+app.get("/members", requireLogin, (req, res) => {
   const { username } = req.session.user;
   res.render("members", {
     locals: {
@@ -140,15 +178,17 @@ app.get("/members", (req, res) => {
   });
 });
 
-app.get("/logout", logout);
+app.get("/logout", requireLogin, logout);
+
+
+
+app.get("/unauthorized", (req, res) => {
+  res.send(`You shall not pass</h1><br><a href="/"><button>Home</button></a>`);
+});
 
 //catch all if website doesn't
 app.get("*", (req, res) => {
   res.status(404).send("<h1>Page not found</h1>");
-});
-
-app.get("/unauthorized", (req, res) => {
-  res.send("You shall not pass");
 });
 
 server.listen(port, hostname, () => {
