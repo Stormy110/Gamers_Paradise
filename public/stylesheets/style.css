@@ -36,7 +36,7 @@
 
 /* this is to make the image div not looked stretched 
 *************************************************/
-.img-holder {
+/* .img-holder {
   height: 300px;
   width: 100%;
   display: flex;
@@ -51,5 +51,5 @@
   /*  display: inline;    */
   transition: 0.3s;
   max-width: 100vw;
-}
+} */
 /* ********************************** */
