@@ -11,9 +11,9 @@ const server = http.createServer(app);
 const bcrypt = require("bcryptjs");
 const { User, Comment, Post } = require("./models");
 const { requireLogin, logout } = require("./auth");
-const UPLOAD_URL = "/uploads/media/"
-const multer = require("multer")
-const upload = multer({dest:"public" + UPLOAD_URL})
+const UPLOAD_URL = "/uploads/media/";
+const multer = require("multer");
+const upload = multer({ dest: "public" + UPLOAD_URL });
 
 const { layout } = require("./utils");
 
@@ -56,22 +56,18 @@ app.get("/", (req, res) => {
   });
 });
 
-app.get("/about", (req,res)=>{
+app.get("/about", (req, res) => {
   res.render("about", {
-    locals: {
-      
-    },
-    ...layout
-  })
+    locals: {},
+    ...layout,
+  });
 });
 
-app.get("/contact", (req,res)=>{
+app.get("/contact", (req, res) => {
   res.render("contact", {
-    locals: {
-      
-    },
-    ...layout
-  })
+    locals: {},
+    ...layout,
+  });
 });
 
 app.get("/signup", (req, res) => {
@@ -150,63 +146,67 @@ app.post("/login", async (req, res) => {
 });
 
 // Put the requirelogin function on each route we need instead of having
-// it do every route after the app.use. This way we can more specifically 
-// decide which route to requirelogin to enter 
+// it do every route after the app.use. This way we can more specifically
+// decide which route to requirelogin to enter
 
-app.get("/members-about", requireLogin, (req,res)=>{
+app.get("/members-about", requireLogin, (req, res) => {
   res.render("members-about", {
-    locals: {
-      
-    },
-    ...layout
-  })
+    locals: {},
+    ...layout,
+  });
 });
 
-app.get("/members-contact", requireLogin, (req,res)=>{
+app.get("/members-contact", requireLogin, (req, res) => {
   res.render("members-contact", {
-    locals: {
-      
-    },
-    ...layout
-  })
+    locals: {},
+    ...layout,
+  });
 });
 
 app.get("/members", requireLogin, async (req, res) => {
   const { username } = req.session.user;
-  const posts = await Post.findAll()
+  const posts = await Post.findAll({
+    // include: [
+    //   {
+    //     model: User,
+    //     attributes: [{ username }],
+    //   },
+    // ],
+  });
   res.render("members", {
     locals: {
       username,
-      posts
+      posts,
     },
     ...layout,
   });
 });
 
-app.get("/members/create", requireLogin, (req,res)=>{
-  res.render('createForm', {
-    locals: {
-      
-    },
+app.get("/members/create", requireLogin, (req, res) => {
+  res.render("createForm", {
+    locals: {},
     ...layout,
   });
-})
-app.post("/members/create", requireLogin, upload.single('media'), async(req,res)=>{
-  const { id } = req.session.user;
-  const { file } = req;
-  const { title, content } = req.body;
-  const post = await Post.create({
-    userid: id,
-    title,
-    media: UPLOAD_URL + file.filename,
-    content
-  })
-  res.redirect("/members")
-})
+});
+app.post(
+  "/members/create",
+  requireLogin,
+  upload.single("media"),
+  async (req, res) => {
+    const { id } = req.session.user;
+    const { file } = req;
+    const { title, content } = req.body;
+    const post = await Post.create({
+      userid: id,
+      title,
+      media: UPLOAD_URL + file.filename,
+      content,
+    });
+    res.redirect("/members");
+  }
+);
 
 app.get("/logout", requireLogin, logout);
-
-
 
 app.get("/unauthorized", (req, res) => {
   res.send(`You shall not pass</h1><br><a href="/"><button>Home</button></a>`);
