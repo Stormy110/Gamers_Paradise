@@ -164,7 +164,7 @@ app.get("/members-contact", requireLogin, (req, res) => {
 });
 
 app.get("/members", requireLogin, async (req, res) => {
-  const { username } = req.session.user;
+  const { username , id } = req.session.user;
   const posts = await Post.findAll({
     // include: [
     //   {
@@ -177,6 +177,7 @@ app.get("/members", requireLogin, async (req, res) => {
     locals: {
       username,
       posts,
+      id,
     },
     ...layout,
   });
@@ -206,6 +207,33 @@ app.post(
     res.redirect("/members");
   }
 );
+
+app.get("/members/profile/:id", requireLogin, async(req, res) => {
+  const { id } = req.params
+  const member = await Post.findAll({
+    where: {
+      userid: id,
+
+
+    }
+  })
+  res.render("profile", {
+    locals: {
+      member
+    },
+    ...layout
+  })
+})
+
+
+
+
+
+
+
+
+
+
 
 app.get("/logout", requireLogin, logout);
 

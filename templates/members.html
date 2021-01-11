@@ -8,17 +8,25 @@ ${header}
 <h1>Welcome to the members page ${username}</h1>
 
 <a href="/members/create"><button>ADD POST</button></a>
+<a href="/members/profile/${id}"><button>VIEW PROFILE</button></a>
+<a href="/members/search"><button>SEARCH</button></a>
 <br />
 <br />
 <ul>
   ${posts.map(p=> { return `
   <li>
-    <div>
+    <div class="postDiv">
       <h2>${p.title}</h2>
-      <img src="${p.media}" alt="${p.username}'s image" />
+      <a href="/members/profile/${p.userid}">
+        <h3>${p.username}</h3>
+      </a>
+      <br>
+
+      <div class="img-holder"><img src="${p.media}" alt="${p.username}'s image" /></div>
       <p>${p.content}</p>
     </div>
   </li>
+
   ` }).join('')}
 </ul>
 
