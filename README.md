@@ -16,7 +16,7 @@
 - As a User I want to be able to Logout
 - As a User I want to 
 - As a User I want to 
-- As a User I want to 
+- As a User I want to
 
 <br>
 <h2 align="center"> Tech/Tools Used </h2>
@@ -33,7 +33,10 @@
 
 <br>
 <h2 align="center"> Problems Faced </h2> 
--
+- Ran into problems:
+    - Adding and Linking foreignkey columns from User Table to Posts Table
+    - Pulling User's specific username for every Post
+    -
 
 <br>
 <h2 align="center"> Database Design </h2>
@@ -51,14 +54,17 @@
 <h2 align="center"> Contributors </h2>
 
 ### Joshua Lopez
-- 
-this is a test
+
+- this is a test
+
 ### Ian Storms
-- 
+
+-
 
 ### Kevin Tucker
+
 -
 
 ### Shoel Uddin
-- 
-Another test 
+
+- Another test
