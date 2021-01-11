@@ -9,8 +9,11 @@ const FileStore = require("session-file-store")(session);
 const app = express();
 const server = http.createServer(app);
 const bcrypt = require("bcryptjs");
-const { User } = require("./models");
+const { User, Comment, Post } = require("./models");
 const { requireLogin, logout } = require("./auth");
+const UPLOAD_URL = "/uploads/media/"
+const multer = require("multer")
+const upload = multer({dest:"public" + UPLOAD_URL})
 
 const { layout } = require("./utils");
 
@@ -168,15 +171,38 @@ app.get("/members-contact", requireLogin, (req,res)=>{
   })
 });
 
-app.get("/members", requireLogin, (req, res) => {
+app.get("/members", requireLogin, async (req, res) => {
   const { username } = req.session.user;
+  const posts = await Post.findAll()
   res.render("members", {
     locals: {
       username,
+      posts
     },
     ...layout,
   });
 });
+
+app.get("/members/create", requireLogin, (req,res)=>{
+  res.render('createForm', {
+    locals: {
+      
+    },
+    ...layout,
+  });
+})
+app.post("/members/create", requireLogin, upload.single('media'), async(req,res)=>{
+  const { id } = req.session.user;
+  const { file } = req;
+  const { title, content } = req.body;
+  const post = await Post.create({
+    userid: id,
+    title,
+    media: UPLOAD_URL + file.filename,
+    content
+  })
+  res.redirect("/members")
+})
 
 app.get("/logout", requireLogin, logout);
 
