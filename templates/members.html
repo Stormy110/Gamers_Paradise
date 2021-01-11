@@ -1,24 +1,25 @@
 ${header}
 <ul class="topnav">
-    <li><a href="/members">Home</a></li>
-    <li><a href="/members-about">About</a></li>
-    <li><a href="/members-contact">Contact</a></li>
-    <li><a href="/logout">Logout</a></li>
+  <li><a href="/members">Home</a></li>
+  <li><a href="/members-about">About</a></li>
+  <li><a href="/members-contact">Contact</a></li>
+  <li><a href="/logout">Logout</a></li>
 </ul>
 <h1>Welcome to the members page ${username}</h1>
 
 <a href="/members/create"><button>ADD POST</button></a>
-<br>
-<br>
+<br />
+<br />
 <ul>
-    ${posts.map(p=> {
-        return `<li><div>
-            <h2>${p.title}</h2>
-            <img src="${p.media}" alt="${username}'s image">
-            <p>${p.content}</p>
-        </div></li>`
-    }).join('')}
+  ${posts.map(p=> { return `
+  <li>
+    <div>
+      <h2>${p.title}</h2>
+      <img src="${p.media}" alt="${p.username}'s image" />
+      <p>${p.content}</p>
+    </div>
+  </li>
+  ` }).join('')}
 </ul>
-
 
 ${footer}
