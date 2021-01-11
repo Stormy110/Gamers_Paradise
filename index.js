@@ -193,11 +193,12 @@ app.post(
   requireLogin,
   upload.single("media"),
   async (req, res) => {
-    const { id } = req.session.user;
+    const { id, username } = req.session.user;
     const { file } = req;
     const { title, content } = req.body;
     const post = await Post.create({
       userid: id,
+      username,
       title,
       media: UPLOAD_URL + file.filename,
       content,
