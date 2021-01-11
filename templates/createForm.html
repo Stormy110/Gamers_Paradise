@@ -1,0 +1,25 @@
+${header}
+<ul class="topnav">
+    <li><a href="/members">Home</a></li>
+    <li><a href="/members-about">About</a></li>
+    <li><a href="/members-contact">Contact</a></li>
+    <li><a href="/logout">Logout</a></li>
+</ul>
+
+<form method="POST" enctype="multipart/form-data">
+    <label >Title 
+        <input type="text" name="title" placeholder="enter title">
+    </label>
+    <br>
+    <label >Media
+        <input type="file" name="media">
+    </label> 
+    <br>
+    <label>Content
+        <textarea  rows="4" cols="50" name="content" placeholder="Make a Post Here!"></textarea>
+    </label> 
+    <br>
+    <input type="submit" value="POST">
+</form>
+
+${footer}
