@@ -1,0 +1,35 @@
+.topnav {
+  display: flex;
+  background-color: silver;
+  margin:0;
+}
+
+.topnav li {
+  flex: 1;
+  list-style-type: none;
+  padding: 15px 0px;
+}
+
+.topnav a {
+  text-decoration: none;
+  color: black;
+}
+
+
+@media all and (max-width: 600px) {
+  .topnav {
+    flex-wrap: wrap;
+  }
+
+  .topnav > li {
+    flex-basis: 50%;
+  }
+}
+
+@media all and (max-width: 400px) {
+  .topnav > li {
+    flex-basis: 100%;
+    text-align:center;
+  }
+  
+}
