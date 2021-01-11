@@ -164,8 +164,9 @@ app.get("/members-contact", requireLogin, (req, res) => {
 });
 
 app.get("/members", requireLogin, async (req, res) => {
-  const { username , id } = req.session.user;
+  const { username, id } = req.session.user;
   const posts = await Post.findAll({
+    order: [["createdAt", "desc"]],
     // include: [
     //   {
     //     model: User,
@@ -197,43 +198,33 @@ app.post(
     const { id, username } = req.session.user;
     const { file } = req;
     const { title, content } = req.body;
+    let mediaPic = file ? UPLOAD_URL + file.filename : "";
     const post = await Post.create({
       userid: id,
       username,
       title,
-      media: UPLOAD_URL + file.filename,
+      media: mediaPic,
       content,
     });
     res.redirect("/members");
   }
 );
 
-app.get("/members/profile/:id", requireLogin, async(req, res) => {
-  const { id } = req.params
+app.get("/members/profile/:id", requireLogin, async (req, res) => {
+  const { id } = req.params;
   const member = await Post.findAll({
     where: {
       userid: id,
-
-
-    }
-  })
+    },
+    order: [["createdAt", "desc"]],
+  });
   res.render("profile", {
     locals: {
-      member
+      member,
     },
-    ...layout
-  })
-})
-
-
-
-
-
-
-
-
-
-
+    ...layout,
+  });
+});
 
 app.get("/logout", requireLogin, logout);
 
