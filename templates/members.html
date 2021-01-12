@@ -29,10 +29,23 @@ ${header}
         />`:'' }
       </div>
       <p>${p.content}</p>
+      
+      <a href="/post/${p.id}/comment"><button>ADD COMMENT</button></a>
+      <a href="/"><button>EDIT POST</button></a>
+      <a href="/"><button>DELETE POST</button></a>
+      <ul>
+        ${p.Comments ?
+          p.Comments.map(c => `
+          <li data-comment-id="${c.id}">
+            ${c.User ? c.User.name : ''}: ${c.content}
+          </li>`).join('') : ''
+        }
+      </ul>
     </div>
   </li>
 
   ` }).join('')}
+  
 </ul>
 
 ${footer}

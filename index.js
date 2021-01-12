@@ -188,6 +188,11 @@ app.get("/members", requireLogin, async (req, res) => {
   const { username, id } = req.session.user;
   const posts = await Post.findAll({
     order: [["createdAt", "desc"]],
+    include: [{
+      model: Comment,
+      attributes: ['content', 'createdAt'],
+      include: User
+    }],
     // include: [
     //   {
     //     model: User,
@@ -230,6 +235,38 @@ app.post(
     res.redirect("/members");
   }
 );
+
+app.get('/post/:id/comment', requireLogin, async (req,res)=>{
+  const { id } = req.params
+
+  const post = await Post.findByPk(id);
+  const users = await User.findAll({
+    order: [
+      ['name', 'asc']
+    ]
+  })
+
+  res.render('add-comment', {
+    locals: {
+      post,
+      users
+    },
+    ...layout
+  });
+});
+
+app.post('/post/:id/comment', requireLogin, async (req, res) => {
+  const post = req.params.id;
+  const { content } = req.body;
+  const { id } = req.session.user;
+
+  const comment = await Comment.create({
+      content,
+      userid: id,
+      postid: post
+  });
+  res.redirect('/members');
+});
 
 app.get("/members/profile/:id", requireLogin, async (req, res) => {
   const { id } = req.params;
