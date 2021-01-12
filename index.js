@@ -9,6 +9,7 @@ const FileStore = require("session-file-store")(session);
 const app = express();
 const server = http.createServer(app);
 const bcrypt = require("bcryptjs");
+const { Op } = require("sequelize");
 const { User, Comment, Post } = require("./models");
 const { requireLogin, logout } = require("./auth");
 const UPLOAD_URL = "/uploads/media/";
@@ -18,7 +19,7 @@ const upload = multer({ dest: "public" + UPLOAD_URL });
 const { layout } = require("./utils");
 
 const logger = morgan("dev");
-const hostname = "127.0.0.1";
+const hostname = "0.0.0.0";
 const port = 3500;
 
 //Register Middleware
@@ -144,14 +145,18 @@ app.post("/login", async (req, res) => {
   // let userEmail = loginid.includes("@") ? loginid : "";
   // let userName = !loginid.includes("@") ? loginid : "" ;
 
+  let finalloginName = username.toLowerCase();
   // let finalloginName = loginid.includes("@") ? loginid : loginid;
   // console.log(finalloginName);
 
   const user = await User.findOne({
     where: {
-      username,
-      // username: finalloginName,
-      // email: finalloginName,
+      [Op.or]: {
+        // username: ,
+        // email: ,
+        username: finalloginName,
+        email: finalloginName,
+      },
     },
   });
   if (user) {
@@ -226,6 +231,11 @@ app.get("/members", requireLogin, async (req, res) => {
     //   },
     // ],
   });
+
+  for (let p of posts) {
+    p.User = await User.findByPk(p.userid);
+  }
+
   res.render("members", {
     locals: {
       displayname,
@@ -295,24 +305,30 @@ app.post("/post/:id/comment", requireLogin, async (req, res) => {
 
 app.get("/members/profile/:id", requireLogin, async (req, res) => {
   const { id } = req.params;
+  const user = await User.findByPk(id);
+
   console.log("Error Before FindAll");
   const member = await Post.findAll({
     where: {
       userid: id,
     },
-    // order: ["desc", "createdAt"],
+    order: [["createdAt", "desc"]],
     include: [
       {
         model: Comment,
         attributes: ["content", "createdAt"],
         include: User,
       },
+      // {
+      //   model: User,
+      // },
     ],
   });
-  console.log(member);
+  console.log(JSON.stringify(member, null, 4));
   res.render("profile", {
     locals: {
       member,
+      user,
     },
     ...layout,
   });
