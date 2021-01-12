@@ -79,26 +79,47 @@ app.get("/signup", (req, res) => {
 
 app.post("/signup", async (req, res) => {
   const { username, password, name, email } = req.body;
-  if (username == '' || password == '') {
-    res.redirect('/signup')
-  }else {const hash = bcrypt.hashSync(password, 10); // auto salt!
-  try {
-    const newUser = await User.create({
-      username,
-      hash,
-      name,
-      email,
-    });
-    console.log(newUser);
+  if (username == "" || password == "") {
+    // res.json(["Username or Password is Blank!"]);
+    res.redirect("/errorsignup");
+  } else {
+    const hash = bcrypt.hashSync(password, 10); // auto salt!
+    try {
+      const newUser = await User.create({
+        username,
+        hash,
+        name,
+        email,
+      });
+      console.log(newUser);
 
-    res.redirect("/login");
-  } catch (e) {
-    //res.send("username is taken");
-    if (e.user === "SequelizeUniqueConstraintError") {
-      console.log("Username is Taken. Try Again!");
+      res.redirect("/login");
+    } catch (e) {
+      //res.send("username is taken");
+      if (e.user === "SequelizeUniqueConstraintError") {
+        console.log("Username is Taken. Try Again!");
+        // res.json(["Username is Taken. Try Again!"]);
+      }
+      res.redirect("/takensignup");
     }
-    res.redirect('/signup')
-  }}
+  }
+});
+
+app.get("/errorsignup", (req, res) => {
+  res.render("errorSignUp", {
+    locals: {
+      error: "Username or Password is Blank!",
+    },
+    ...layout,
+  });
+});
+app.get("/takensignup", (req, res) => {
+  res.render("takenSignUp", {
+    locals: {
+      error: "Username Is Taken. Try Again!",
+    },
+    ...layout,
+  });
 });
 
 app.get("/login", (req, res) => {
