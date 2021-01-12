@@ -79,7 +79,9 @@ app.get("/signup", (req, res) => {
 
 app.post("/signup", async (req, res) => {
   const { username, password, name, email } = req.body;
-  const hash = bcrypt.hashSync(password, 10); // auto salt!
+  if (username == '' || password == '') {
+    res.redirect('/signup')
+  }else {const hash = bcrypt.hashSync(password, 10); // auto salt!
   try {
     const newUser = await User.create({
       username,
@@ -91,14 +93,12 @@ app.post("/signup", async (req, res) => {
 
     res.redirect("/login");
   } catch (e) {
-    res.send("username is taken");
-  }
-  // res.render("signUpPage", {
-  //   locals: {},
-
-  //   ...layout,
-  // });
-  // res.redirect('/members')
+    //res.send("username is taken");
+    if (e.user === "SequelizeUniqueConstraintError") {
+      console.log("Username is Taken. Try Again!");
+    }
+    res.redirect('/signup')
+  }}
 });
 
 app.get("/login", (req, res) => {
