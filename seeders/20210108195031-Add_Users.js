@@ -15,6 +15,7 @@ module.exports = {
       {
         name: "Josh L",
         username: "jlopez28",
+        displayname: "FocusJosh",
         hash: "$2a$10$z2.xgy/P5CK1CyMXSCEPhuL8ZQzOU3LicQxwpR/gkpwD2Sy53EKvy",
         email: "jlopez28@gamersparadise.com",
         createdAt: new Date(),
@@ -23,6 +24,7 @@ module.exports = {
       {
         name: "Ian S",
         username: "istorms30",
+        displayname: "Stormy",
         hash: "$2a$10$5lkZFKdEgf6qp.O.nZDK9Ot2RKrtRA4GJO9D49vjQYVXUmdQM46Ry",
         email: "istorms30@gamersparadise.com",
         createdAt: new Date(),
@@ -31,6 +33,7 @@ module.exports = {
       {
         name: "Sho U",
         username: "suddin29",
+        displayname: "NukeSho",
         hash: "$2a$10$gCktHc/KASRoxoYltwmAhew3oh9p8wAt5J2yN1lbwA1.9av4FAU/y",
         email: "suddin29@gamersparadise.com",
         createdAt: new Date(),
@@ -38,8 +41,9 @@ module.exports = {
       },
       {
         name: "Kevin T",
-        hash: "$2a$10$/d8XOvGpAwdK.x5Sv5R/selO1cLlpwJrZ6bWgyat09uUU3Oc2SASy",
         username: "ktuck31",
+        displayname: "Aegon",
+        hash: "$2a$10$/d8XOvGpAwdK.x5Sv5R/selO1cLlpwJrZ6bWgyat09uUU3Oc2SASy",
         email: "ktuck31@gamersparadise.com",
         createdAt: new Date(),
         updatedAt: new Date(),

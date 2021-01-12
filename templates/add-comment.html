@@ -1,9 +1,11 @@
 ${header}
 <h1>Comment on: ${post.title}</h1>
-<div>${post.media.includes("/uploads/media/") ? `<img
-  src="${post.media}"
-  alt="${post.username}'s image"
-/>`:'' }</div>
+<div>
+  ${post.media.includes("/uploads/media/") ? `<img
+    src="${post.media}"
+    alt="${post.displayname}'s image"
+  />`:'' }
+</div>
 <p>${post.content}</p>
 
 <form method="POST">
@@ -11,7 +13,7 @@ ${header}
     Comment:
     <textarea name="content"></textarea>
   </label>
-  <br>
-  <input type="submit" value="submit">
+  <br />
+  <input type="submit" value="submit" />
 </form>
 ${footer}

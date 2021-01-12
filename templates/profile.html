@@ -1,28 +1,40 @@
 ${header}
 <ul class="topnav">
-    <li><a href="/members">Home</a></li>
-    <li><a href="/members-about">About</a></li>
-    <li><a href="/members-contact">Contact</a></li>
-    <li><a href="/logout">Logout</a></li>
+  <li><a href="/members">Home</a></li>
+  <li><a href="/members-about">About</a></li>
+  <li><a href="/members-contact">Contact</a></li>
+  <li><a href="/logout">Logout</a></li>
 </ul>
 <ul>
-    ${member.map(p=> { return `
-    <li>
-        <div class="postDiv">
-            <h2>${p.title}</h2>
-            <a href="/members/profile/${p.userid}">
-                <h3>${p.username}</h3>
-            </a>
-            <br />
+  ${member.map(p=> { return `
+  <li>
+    <div class="postDiv">
+      <h2>${p.title}</h2>
+      <a href="/members/profile/${p.userid}">
+        <h3>${p.username}</h3>
+      </a>
+      <br />
 
-            <div class="img-holder">
-                <img src="${p.media}" alt="${p.username}'s image" />
-            </div>
-            <p>${p.content}</p>
-        </div>
-    </li>
+      <div class="img-holder">
+        <img src="${p.media}" alt="${p.username}'s image" />
+      </div>
+      <p>${p.content}</p>
+      <a href="/post/${p.id}/comment"><button>ADD COMMENT</button></a>
+      <a href="/"><button>EDIT POST</button></a>
+      <a href="/"><button>DELETE POST</button></a>
+      <ul>
+        ${p.Comments ? p.Comments.map(c => `
+        <li data-comment-id="${c.id}">
+         ${c.User ? `<a href="/members/profile/${c.User.id}"
+            >${c.User.displayname}</a>` : ''}</a
+          >: ${c.content}
+        </li>
+        `).join('') : '' }
+      </ul>
+    </div>
+  </li>
 
-    ` }).join('')}
+  ` }).join('')}
 </ul>
 
 ${footer}
