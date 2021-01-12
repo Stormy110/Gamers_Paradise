@@ -1,0 +1,17 @@
+${header}
+<h1>Comment on: ${post.title}</h1>
+<div>${post.media.includes("/uploads/media/") ? `<img
+  src="${post.media}"
+  alt="${post.username}'s image"
+/>`:'' }</div>
+<p>${post.content}</p>
+
+<form method="POST">
+  <label>
+    Comment:
+    <textarea name="content"></textarea>
+  </label>
+  <br>
+  <input type="submit" value="submit">
+</form>
+${footer}
