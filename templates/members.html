@@ -18,14 +18,14 @@ ${header}
     <div class="postDiv">
       <h2>${p.title}</h2>
       <a href="/members/profile/${p.userid}">
-        <h3>${p.username}</h3>
+        <h3>${p.User.displayname}</h3>
       </a>
       <br />
 
       <div class="img-holder">
         ${p.media.includes("/uploads/media/") ? `<img
           src="${p.media}"
-          alt="${p.username}'s image"
+          alt="${p.User.displayname}'s image"
         />`:'' }
       </div>
       <p>${p.content}</p>
