@@ -6,7 +6,9 @@ ${header}
 </ul>
 <h1 align="center">Welcome Please Sign Up for Your Gamer's Account</h1>
 <br />
-<form align="center" method="POST">
+<h2 align="center" style="color: red">${error}</h2>
+<br />
+<form align="center" action="/signup" method="POST">
   <input type="text" name="username" autofocus placeholder="username" />
   <br />
   <input type="password" name="password" placeholder="password" />
