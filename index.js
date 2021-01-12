@@ -78,18 +78,23 @@ app.get("/signup", (req, res) => {
 });
 
 app.post("/signup", async (req, res) => {
-  const { username, password, name, email } = req.body;
+  const { password, name, email } = req.body;
+  let { username } = req.body;
   if (username == "" || password == "") {
     // res.json(["Username or Password is Blank!"]);
     res.redirect("/errorsignup");
   } else {
     const hash = bcrypt.hashSync(password, 10); // auto salt!
     try {
+      const displayname = username;
+      const dbUsername = username.toLowerCase();
+
       const newUser = await User.create({
-        username,
+        username: dbUsername,
         hash,
         name,
         email,
+        displayname,
       });
       console.log(newUser);
 
@@ -131,12 +136,22 @@ app.get("/login", (req, res) => {
 
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
+  // const { loginid, password } = req.body;
 
   // I need to check the database!
   // Is that a valid user?
+
+  // let userEmail = loginid.includes("@") ? loginid : "";
+  // let userName = !loginid.includes("@") ? loginid : "" ;
+
+  // let finalloginName = loginid.includes("@") ? loginid : loginid;
+  // console.log(finalloginName);
+
   const user = await User.findOne({
     where: {
       username,
+      // username: finalloginName,
+      // email: finalloginName,
     },
   });
   if (user) {
@@ -149,6 +164,7 @@ app.post("/login", async (req, res) => {
         // username
         id: user.id,
         // id
+        displayname: user.displayname,
       };
       req.session.save(() => {
         res.redirect("/members");
@@ -185,14 +201,24 @@ app.get("/members-contact", requireLogin, (req, res) => {
 });
 
 app.get("/members", requireLogin, async (req, res) => {
-  const { username, id } = req.session.user;
+  const { displayname, username, id } = req.session.user;
+
+  console.log(req.session.user);
+
   const posts = await Post.findAll({
     order: [["createdAt", "desc"]],
-    include: [{
-      model: Comment,
-      attributes: ['content', 'createdAt'],
-      include: User
-    }],
+    include: [
+      {
+        model: Comment,
+        attributes: ["content", "createdAt"],
+        include: User,
+      },
+      // {
+      //   model: User,
+      //   attributes: ["displayname", "createdAt"],
+      //   // include: User,
+      // },
+    ],
     // include: [
     //   {
     //     model: User,
@@ -202,6 +228,7 @@ app.get("/members", requireLogin, async (req, res) => {
   });
   res.render("members", {
     locals: {
+      displayname,
       username,
       posts,
       id,
@@ -236,46 +263,53 @@ app.post(
   }
 );
 
-app.get('/post/:id/comment', requireLogin, async (req,res)=>{
-  const { id } = req.params
+app.get("/post/:id/comment", requireLogin, async (req, res) => {
+  const { id } = req.params;
 
   const post = await Post.findByPk(id);
   const users = await User.findAll({
-    order: [
-      ['name', 'asc']
-    ]
-  })
+    order: [["name", "asc"]],
+  });
 
-  res.render('add-comment', {
+  res.render("add-comment", {
     locals: {
       post,
-      users
+      users,
     },
-    ...layout
+    ...layout,
   });
 });
 
-app.post('/post/:id/comment', requireLogin, async (req, res) => {
+app.post("/post/:id/comment", requireLogin, async (req, res) => {
   const post = req.params.id;
   const { content } = req.body;
   const { id } = req.session.user;
 
   const comment = await Comment.create({
-      content,
-      userid: id,
-      postid: post
+    content,
+    userid: id,
+    postid: post,
   });
-  res.redirect('/members');
+  res.redirect("/members");
 });
 
 app.get("/members/profile/:id", requireLogin, async (req, res) => {
   const { id } = req.params;
+  console.log("Error Before FindAll");
   const member = await Post.findAll({
     where: {
       userid: id,
     },
-    order: [["createdAt", "desc"]],
+    // order: ["desc", "createdAt"],
+    include: [
+      {
+        model: Comment,
+        attributes: ["content", "createdAt"],
+        include: User,
+      },
+    ],
   });
+  console.log(member);
   res.render("profile", {
     locals: {
       member,
