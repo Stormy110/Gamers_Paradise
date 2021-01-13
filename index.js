@@ -152,8 +152,6 @@ app.post("/login", async (req, res) => {
   const user = await User.findOne({
     where: {
       [Op.or]: {
-        // username: ,
-        // email: ,
         username: finalloginName,
         email: finalloginName,
       },
@@ -273,7 +271,6 @@ app.post(
   }
 );
 
-
 app.get("/post/:id/comment", requireLogin, async (req, res) => {
   const { id } = req.params;
 
@@ -336,67 +333,69 @@ app.get("/members/profile/:id", requireLogin, async (req, res) => {
 });
 
 app.get("/members/post/:id/edit", requireLogin, async (req, res) => {
-  const { id } = req.params
-  const post = await Post.findByPk(id)
+  const { id } = req.params;
+  const post = await Post.findByPk(id);
   res.render("createFormEdit", {
     locals: {
       post,
     },
-    ...layout
-  }) 
-})
-
-app.post("/members/post/:id/edit", requireLogin, upload.single("media"),async (req, res) => {
-  const { id } = req.params
-  const { file } = req;
-  console.log(id)
-  const { title, content } = req.body
-  console.log(title)
-  console.log(content)
-  
-  let data = {
-    title,
-    content,
-  };
-  // let mediaPic = file ? UPLOAD_URL + file.filename : "";
-  
-  console.log(file.filename)
-  if (file) {
-  data["media"] = UPLOAD_URL + file.filename
-  }
-  const updatedPost = await Post.update(data,
-    {
-    where: {
-        id,
-        userid: req.session.user.id,
-    }
+    ...layout,
   });
-
-  res.redirect("/members")
-})
-
-
-app.get('/members/post/:id/delete', requireLogin, async (req,res)=>{
-  const { id } = req.params;
-  const post = await Post.findByPk(id);
-  res.render('delete-post', {
-    locals: {
-      name: "Delete Post",
-      post
-    },
-    ...layout
-  })
 });
 
-app.post('/members/post/:id/delete', requireLogin, async (req,res)=>{
+app.post(
+  "/members/post/:id/edit",
+  requireLogin,
+  upload.single("media"),
+  async (req, res) => {
+    const { id } = req.params;
+    const { file } = req;
+    console.log(id);
+    const { title, content } = req.body;
+    console.log(title);
+    console.log(content);
+
+    let data = {
+      title,
+      content,
+    };
+    // let mediaPic = file ? UPLOAD_URL + file.filename : "";
+
+    if (file) {
+      data["media"] = UPLOAD_URL + file.filename;
+    }
+    const updatedPost = await Post.update(data, {
+      where: {
+        id,
+        userid: req.session.user.id,
+      },
+    });
+
+    res.redirect("/members");
+  }
+);
+
+app.get("/members/post/:id/delete", requireLogin, async (req, res) => {
+  const { id } = req.params;
+  const post = await Post.findByPk(id);
+  res.render("delete-post", {
+    locals: {
+      name: "Delete Post",
+      post,
+    },
+    ...layout,
+  });
+});
+
+app.post("/members/post/:id/delete", requireLogin, async (req, res) => {
   const { id } = req.params;
   const deletedPost = await Post.destroy({
     where: {
       id,
-      userid: req.session.user.id
-    }
+      userid: req.session.user.id,
+    },
   });
-  res.redirect('/members')
+  res.redirect("/members");
 });
 
 app.get("/logout", requireLogin, logout);
@@ -404,7 +403,7 @@ app.get("/logout", requireLogin, logout);
 app.get("/unauthorized", (req, res) => {
   res.render("unauthorized", {
     ...layout,
-  })
+  });
 });
 //catch all if website doesn't
 app.get("*", (req, res) => {

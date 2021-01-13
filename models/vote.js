@@ -9,30 +9,18 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Vote.hasMany(models.User, {
+      Vote.belongsTo(models.User, {
         foreignKey: "userid",
       });
-      Vote.hasMany(models.Post, {
+      Vote.belongsTo(models.Post, {
         foreignKey: "postid",
       });
     }
   }
   Vote.init(
     {
-      userid: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "Users",
-          key: "id",
-        },
-      },
-      postid: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "Posts",
-          key: "id",
-        },
-      },
+      userid: DataTypes.INTEGER,
+      postid: DataTypes.INTEGER,
       upvote: DataTypes.INTEGER,
       downvote: DataTypes.INTEGER,
     },

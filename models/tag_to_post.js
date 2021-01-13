@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Tag_to_Post.belongsTo(models.Tags, {
+      Tag_to_Post.belongsTo(models.Tag, {
         foreignKey: "tagid",
       });
       Tag_to_Post.belongsTo(models.Post, {
@@ -19,20 +19,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   Tag_to_Post.init(
     {
-      tagid: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "Tags",
-          key: "id",
-        },
-      },
-      postid: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "Posts",
-          key: "id",
-        },
-      },
+      tagid: DataTypes.INTEGER,
+      postid: DataTypes.INTEGER,
     },
     {
       sequelize,
