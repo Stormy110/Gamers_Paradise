@@ -20,7 +20,7 @@ ${header}
       </div>
       <p>${p.content}</p>
       <a href="/post/${p.id}/comment"><button>ADD COMMENT</button></a>
-      <a href="/"><button>EDIT POST</button></a>
+      <a href="/members/post/${p.id}/edit"><button>EDIT POST</button></a>
       <a href="/"><button>DELETE POST</button></a>
       <ul>
         ${p.Comments ? p.Comments.map(c => `
