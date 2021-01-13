@@ -213,7 +213,7 @@ app.get("/members", requireLogin, async (req, res) => {
     include: [
       {
         model: Comment,
-        attributes: ["content", "createdAt"],
+        attributes: ["content", "createdAt", "id"],
         include: User,
       },
       // {
@@ -397,6 +397,76 @@ app.post("/members/post/:id/delete", requireLogin, async (req, res) => {
   });
   res.redirect("/members");
 });
+
+
+app.get("/members/comment/:id/edit", requireLogin, async (req, res) => {
+  const { id } = req.params
+  const comment = await Comment.findByPk(id)
+  const post = await Post.findByPk(comment.postid)
+  const user = await User.findByPk(comment.userid)
+  res.render("editComment", {
+    locals: {
+      comment,
+      post,
+      user,
+    },
+    ...layout
+  });
+  
+});
+
+
+app.post("/members/comment/:id/edit", requireLogin, async (req, res) => {
+  const { id } = req.params
+  const { content } = req.body
+  const updatedComment = await Comment.update(
+    {
+      content
+    },{
+    where: {
+      id,
+      userid: req.session.user.id
+    }
+  })
+
+  
+  res.redirect("/members")
+  
+
+})
+
+app.get("/members/comment/:id/delete", requireLogin, async (req, res) => {
+  const {id} = req.params
+  const comment = await Comment.findByPk(id)
+  res.render("deleteComment", {
+    locals: {
+      comment
+      
+    },
+    ...layout
+  })
+
+})
+
+
+
+app.post("/members/comment/:id/delete", requireLogin, async (req, res) => {
+  const { id } = req.params
+  const deletedComment = await Comment.destroy(
+    {
+      where: {
+        id,
+        userid: req.session.user.id
+      }
+    })
+  res.redirect("/members")
+});
+
+
+
+
+
+
 
 app.get("/logout", requireLogin, logout);
 
