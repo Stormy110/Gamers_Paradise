@@ -353,13 +353,16 @@ app.post("/members/post/:id/edit", requireLogin, upload.single("media"),async (r
   const { title, content } = req.body
   console.log(title)
   console.log(content)
-  // let mediaPic = file ?  : "";
+  
   let data = {
     title,
     content,
   };
+  // let mediaPic = file ? UPLOAD_URL + file.filename : "";
+  
+  console.log(file.filename)
   if (file) {
-  data[media] = UPLOAD_URL + file.filename
+  data["media"] = UPLOAD_URL + file.filename
   }
   const updatedPost = await Post.update(data,
     {
