@@ -376,6 +376,29 @@ app.post("/members/post/:id/edit", requireLogin, upload.single("media"),async (r
 })
 
 
+app.get('/members/post/:id/delete', requireLogin, async (req,res)=>{
+  const { id } = req.params;
+  const post = await Post.findByPk(id);
+  res.render('delete-post', {
+    locals: {
+      name: "Delete Post",
+      post
+    },
+    ...layout
+  })
+});
+
+app.post('/members/post/:id/delete', requireLogin, async (req,res)=>{
+  const { id } = req.params;
+  const deletedPost = await Post.destroy({
+    where: {
+      id,
+      userid: req.session.user.id
+    }
+  });
+  res.redirect('/members')
+});
+
 app.get("/logout", requireLogin, logout);
 
 app.get("/unauthorized", (req, res) => {
