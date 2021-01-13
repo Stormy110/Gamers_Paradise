@@ -273,6 +273,7 @@ app.post(
   }
 );
 
+
 app.get("/post/:id/comment", requireLogin, async (req, res) => {
   const { id } = req.params;
 
@@ -333,6 +334,44 @@ app.get("/members/profile/:id", requireLogin, async (req, res) => {
     ...layout,
   });
 });
+
+app.get("/members/post/:id/edit", requireLogin, async (req, res) => {
+  const { id } = req.params
+  const post = await Post.findByPk(id)
+  res.render("createFormEdit", {
+    locals: {
+      post,
+    },
+    ...layout
+  }) 
+})
+
+app.post("/members/post/:id/edit", requireLogin, upload.single("media"),async (req, res) => {
+  const { id } = req.params
+  const { file } = req;
+  console.log(id)
+  const { title, content } = req.body
+  console.log(title)
+  console.log(content)
+  // let mediaPic = file ?  : "";
+  let data = {
+    title,
+    content,
+  };
+  if (file) {
+  data[media] = UPLOAD_URL + file.filename
+  }
+  const updatedPost = await Post.update(data,
+    {
+    where: {
+        id,
+        userid: req.session.user.id,
+    }
+  });
+
+  res.redirect("/members")
+})
+
 
 app.get("/logout", requireLogin, logout);
 
