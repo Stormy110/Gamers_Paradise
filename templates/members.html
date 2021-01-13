@@ -23,10 +23,7 @@ ${header}
       <br />
 
       <div class="img-holder">
-        ${p.media.includes("/uploads/media/") ? `<img
-          src="${p.media}"
-          alt="${p.User.displayname}'s image"
-        />`:'' }
+        ${p.media.includes("/uploads/media/") ? `<img src="${p.media}" alt="${p.User.displayname}'s image" />`:'' }
       </div>
       <p>${p.content}</p>
 
@@ -36,9 +33,9 @@ ${header}
       <ul>
         ${p.Comments ? p.Comments.map(c => `
         <li data-comment-id="${c.id}">
-         ${c.User ? `<a href="/members/profile/${c.User.id}"
-            >${c.User.displayname}</a>` : ''}</a
-          >: ${c.content}
+          ${c.User ? `<a href="/members/profile/${c.User.id}">${c.User.displayname}</a>` : ''}: ${c.content}
+          <a href="/members/comment/${c.id}/edit"> <button>Edit Comment</button></a>
+           <a href="/members/comment/${c.id}/delete"> <button>Delete Comment</button></a>
         </li>
         `).join('') : '' }
       </ul>
