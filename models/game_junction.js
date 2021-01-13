@@ -19,20 +19,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   Game_Junction.init(
     {
-      gameid: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "Game",
-          key: "id",
-        },
-      },
-      userid: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "User",
-          key: "id",
-        },
-      },
+      gameid: DataTypes.INTEGER,
+      userid: DataTypes.INTEGER,
     },
     {
       sequelize,
