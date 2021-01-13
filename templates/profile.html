@@ -28,6 +28,8 @@ ${header}
          ${c.User ? `<a href="/members/profile/${c.User.id}"
             >${c.User.displayname}</a>` : ''}</a
           >: ${c.content}
+          <a href="/members/comment/${c.id}/edit"> <button>Edit Comment</button></a>
+          <a href="/members/comment/${c.id}/delete"> <button>Delete Comment</button></a>
         </li>
         `).join('') : '' }
       </ul>
