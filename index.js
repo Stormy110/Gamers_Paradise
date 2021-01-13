@@ -16,6 +16,8 @@ const UPLOAD_URL = "/uploads/media/";
 const multer = require("multer");
 const upload = multer({ dest: "public" + UPLOAD_URL });
 
+const Sequelize = require("sequelize")
+
 const { layout } = require("./utils");
 
 const logger = morgan("dev");
@@ -463,8 +465,51 @@ app.post("/members/comment/:id/delete", requireLogin, async (req, res) => {
 });
 
 
+app.get("/members/search", requireLogin, (req,res)=>{
+  res.render('search', {
+    locals: {
 
+    },
+    ...layout
+  })
+})
 
+app.post("/members/search", requireLogin, async (req,res)=>{
+  const { searchContent } = req.body;
+  
+  try {
+      if (searchContent) {
+          const posts = await Post.findAll({
+              where:
+                  Sequelize.where(Sequelize.fn("concat",Sequelize.col("title"), /*Sequelize.col("content")*/),{
+                    [Op.iLike]: "%" + searchContent + "%" 
+                  }),
+          
+              include: [
+                {
+                  model: Comment,
+                  attributes: ["content", "createdAt"],
+                  include: User,
+                }
+                
+              ]
+            });
+            for (let p of posts) {
+              p.User = await User.findByPk(p.userid);
+            }
+              res.render("search-results", {
+                  locals: {
+                      posts
+              },
+              ...layout
+          })
+      }
+  } catch (err) {
+      console.log(`SEARCH ERROR : ${err}`);
+      res.redirect("/members")
+  }
+});
+  
 
 
 

@@ -1,0 +1,41 @@
+${header}
+<ul class="topnav">
+    <li><a href="/members">Home</a></li>
+    <li><a href="/members-about">About</a></li>
+    <li><a href="/members-contact">Contact</a></li>
+    <li><a href="/logout">Logout</a></li>
+  </ul>
+  <h1>Search Results:</h1>
+  <ul>
+    ${posts.map(p => { return `
+    <li>
+      <div class="postDiv">
+        <h2>${p.title}</h2>
+        <a href="/members/profile/${p.userid}">
+          <h3>${p.User.displayname}</h3>
+        </a>
+        <br />
+  
+        <div class="img-holder">
+          ${p.media.includes("/uploads/media/") ? `<img src="${p.media}" alt="${p.User.displayname}'s image" />`:'' }
+        </div>
+        <p>${p.content}</p>
+  
+        <a href="/post/${p.id}/comment"><button>ADD COMMENT</button></a>
+        <a href="/members/post/${p.id}/edit"><button>EDIT POST</button></a>
+        <a href="/members/post/${p.id}/delete"><button>DELETE POST</button></a>
+        <ul>
+          ${p.Comments ? p.Comments.map(c => `
+          <li data-comment-id="${c.id}">
+            ${c.User ? `<a href="/members/profile/${c.User.id}">${c.User.displayname}</a>` : ''}: ${c.content}
+            <a href="/members/comment/${c.id}/edit"> <button>Edit Comment</button></a>
+             <a href="/members/comment/${c.id}/delete"> <button>Delete Comment</button></a>
+          </li>
+          `).join('') : '' }
+        </ul>
+      </div>
+    </li>
+  
+    ` }).join('')}
+  </ul>
+${footer}
