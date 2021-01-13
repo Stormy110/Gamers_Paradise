@@ -33,10 +33,16 @@
 
 <br>
 <h2 align="center"> Problems Faced </h2> 
-- Ran into problems:
+
+- Monday 1/11/21:
     - Adding and Linking foreignkey columns from User Table to Posts Table
     - Pulling User's specific username for every Post
-    -
+
+- Tuesday 1/12/21:
+  - Finding out how to log in with either username or email 
+  - Verifying email or username to be unique regardless of capitalization
+  - Calling displayname instead of username to show up on the pages.
+  - 
 
 <br>
 <h2 align="center"> Database Design </h2>
@@ -55,7 +61,7 @@
 
 ### Joshua Lopez
 
-- this is a test
+- 
 
 ### Ian Storms
 
@@ -67,4 +73,4 @@
 
 ### Shoel Uddin
 
-- Another test
+- 

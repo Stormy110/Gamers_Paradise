@@ -337,9 +337,10 @@ app.get("/members/profile/:id", requireLogin, async (req, res) => {
 app.get("/logout", requireLogin, logout);
 
 app.get("/unauthorized", (req, res) => {
-  res.send(`You shall not pass</h1><br><a href="/"><button>Home</button></a>`);
+  res.render("unauthorized", {
+    ...layout,
+  })
 });
-
 //catch all if website doesn't
 app.get("*", (req, res) => {
   res.status(404).send("<h1>Page not found</h1>");
