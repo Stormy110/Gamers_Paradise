@@ -18,6 +18,12 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Post, {
         foreignKey: "username",
       });
+      User.hasMany(models.GameJunction, {
+        foreignKey: "userid",
+      });
+      User.belongsTo(models.Vote, {
+        foreignKey: "userid",
+      });
     }
   }
   User.init(

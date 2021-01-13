@@ -18,6 +18,12 @@ module.exports = (sequelize, DataTypes) => {
       Post.belongsTo(models.User, {
         foreignKey: "username",
       });
+      Post.belongsTo(models.Tag_to_Post, {
+        foreignKey: "postid",
+      });
+      Post.belongsTo(models.Vote, {
+        foreignKey: "postid",
+      });
     }
   }
   Post.init(
