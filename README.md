@@ -8,22 +8,24 @@
 
 
 <br>
-<h2 align="center"> User Story </h2> 
+<h2 align="center"> User Story </h2>
+
 - As a User I want to see a Homepage with app info
 - As a User I want to be able to sign up or login at the homepage
 - As a User I want to login and see my posts and others post
 - As a User I want to be able to add posts with pictures/videos using username 
 - As a User I want to add comments to other's posts
 - As a User I want to be able to Logout
-- As a User I want to 
-- As a User I want to 
-- As a User I want to
+- As a User I want to search for games 
+- As a User I want to search for posts
+- As a User I want to edit and delete my posts
+- As a User I want to edit and delete my comments
 
 <br>
 <h2 align="center"> Tech/Tools Used </h2>
 
 - HTML
-- CSS
+- CSS - Flexbox, Grid
 - Npm
 - ExpressJS
 - AWS
@@ -43,11 +45,20 @@
   - Finding out how to log in with either username or email 
   - Verifying email or username to be unique regardless of capitalization
   - Calling displayname instead of username to show up on the pages.
-  - 
+
+- Thursday 1/14/21:
+  - Trying to attach the game model and the post model
+  - Would not send the game information with each post because the relationship was not there
+  - Added a gameid in the post model as a foreign key and used it to find the game title for each post and used the gameid as the url to link each game title to that game's display page
+
+- Thursday 1/14/21:
+  - Having some problems with CSS and Grid
+  - Content not displaying correctly
+  - Fixed it with trial and error
 
 <br>
 <h2 align="center"> Database Design </h2>
--
+
 
 <br>
 <h2 align="center"> Diagrams  </h2>
