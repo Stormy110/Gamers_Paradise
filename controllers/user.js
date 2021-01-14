@@ -99,18 +99,11 @@ const processLogin = async (req, res) => {
     // res.redirect('/members')
 };
 
-const logout = (req, res) => {
-    console.log('logging out...');
-    req.session.destroy(() => {
-        // After deleting session:
-        res.redirect('/');
-    });
-};
+
 
 module.exports = {
     newUser,
     processNewUser,
     login,
-    processLogin,
-    logout
+    processLogin
 };

@@ -1,5 +1,6 @@
 module.exports = {
     homeController: require('./home'),
     errorController: require('./errorPage'),
-    userController: require('./user')
+    userController: require('./user'),
+    memberController: require('./member')
 }
