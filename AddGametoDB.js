@@ -106,7 +106,7 @@ async function GetPages() {
         // console.log(genre);
       }
       // console.log(genrelist);
-      // genrelist = genrelist == undefined ? genrelist : ;
+      // genrelist = genrelist == [] ? genrelist : ;
 
       obj["title"] = title;
       obj["image"] = image;

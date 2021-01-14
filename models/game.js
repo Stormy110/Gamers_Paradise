@@ -12,6 +12,9 @@ module.exports = (sequelize, DataTypes) => {
       Game.hasMany(models.Game_Junction, {
         foreignKey: "gameid",
       });
+      Game.hasMany(models.Post, {
+        foreignKey: "gameid",
+      });
     }
   }
   Game.init(
