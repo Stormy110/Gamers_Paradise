@@ -11,6 +11,12 @@ ${header}
         <input type="text" name="title" value="${post.title}">
     </label>
     <br>
+    <label >Game Title
+        <select name="gameid">
+            ${games.map(game=> `<option value="${game.id}">${game.title}</option>`)}
+        </select>
+    </label>
+    <br>
     <label >Media
         <input type="file" name="media">
     </label> 
