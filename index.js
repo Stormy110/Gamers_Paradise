@@ -19,7 +19,7 @@ const upload = multer({ dest: "public" + UPLOAD_URL });
 const Sequelize = require("sequelize");
 
 const { layout } = require("./utils");
-const { homeRouter,userRouter } = require("./routers");
+const { homeRouter,userRouter, memberRouter } = require("./routers");
 
 const logger = morgan("dev");
 const hostname = "0.0.0.0";
@@ -60,148 +60,9 @@ const {
 app.use('/', homeRouter) //Has all home items
 app.use('/user', userRouter) // Has SignUp, LogIn, and logOut
 
-// app.get("/login", (req, res) => {
-//   res.render("loginPage", {
-//     locals: {},
-//     ...layout,
-//   });
-// });
+app.use("/members", memberRouter)
 
-// app.post("/login", async (req, res) => {
-//   const { username, password } = req.body;
-//   // const { loginid, password } = req.body;
-
-//   // I need to check the database!
-//   // Is that a valid user?
-
-//   // let userEmail = loginid.includes("@") ? loginid : "";
-//   // let userName = !loginid.includes("@") ? loginid : "" ;
-
-//   let finalloginName = username.toLowerCase();
-//   // let finalloginName = loginid.includes("@") ? loginid : loginid;
-//   // console.log(finalloginName);
-
-//   const user = await User.findOne({
-//     where: {
-//       [Op.or]: {
-//         username: finalloginName,
-//         email: finalloginName,
-//       },
-//     },
-//   });
-//   if (user) {
-//     // Is that their password?
-//     //res.send('we have a user!');
-//     const isValid = bcrypt.compareSync(password, user.hash);
-//     if (isValid) {
-//       req.session.user = {
-//         username: user.username,
-//         // username
-//         id: user.id,
-//         // id
-//         displayname: user.displayname,
-//       };
-//       req.session.save(() => {
-//         res.redirect("/members");
-//         // res.send('that is totally right!');
-//       });
-//     } else {
-//       res.send("boooo wrong password!");
-//     }
-//   } else {
-//     res.send("No user with that name!");
-//   }
-//   //   res.render("loginPage", {
-//   //     locals: {},
-//   //   });
-//   // res.redirect('/members')
-// });
-
-// Put the requirelogin function on each route we need instead of having
-// it do every route after the app.use. This way we can more specifically
-// decide which route to requirelogin to enter
-
-app.get("/members-about", requireLogin, (req, res) => {
-  res.render("members-about", {
-    locals: {},
-    ...layout,
-  });
-});
-
-app.get("/members-contact", requireLogin, (req, res) => {
-  res.render("members-contact", {
-    locals: {},
-    ...layout,
-  });
-});
-
-app.get("/members", requireLogin, async (req, res) => {
-  const { displayname, username, id } = req.session.user;
-
-  console.log(req.session.user);
-
-  const posts = await Post.findAll({
-    order: [["createdAt", "desc"]],
-    include: [
-      {
-        model: Comment,
-        attributes: ["content", "createdAt", "id"],
-        include: User,
-      },
-      // {
-      //   model: Game,
-      //   attributes: ["title", "createdAt"],
-      // }
-    ]
-  });
-
-  for (let p of posts) {
-    p.User = await User.findByPk(p.userid);
-    p.Game = await Game.findByPk(p.gameid)
-  }
-
-  res.render("members", {
-    locals: {
-      displayname,
-      username,
-      posts,
-      id,
-    },
-    ...layout,
-  });
-});
-
-app.get("/members/create", requireLogin, async(req, res) => {
-  const games = await Game.findAll()
-  res.render("createForm", {
-    locals: {
-      games
-    },
-    ...layout,
-  });
-});
-app.post(
-  "/members/create",
-  requireLogin,
-  upload.single("media"),
-  async (req, res) => {
-    const { id, username } = req.session.user;
-    const { file } = req;
-    const { title, content, gameid } = req.body;
-    let mediaPic = file ? UPLOAD_URL + file.filename : "";
-    const post = await Post.create({
-      userid: id,
-      username,
-      title,
-      media: mediaPic,
-      content,
-      gameid
-    });
-    res.redirect("/members");
-  }
-);
-
-app.get("/post/:id/comment", requireLogin, async (req, res) => {
+app.get("/members/post/:id/comment", requireLogin, async (req, res) => {
   const { id } = req.params;
 
   const post = await Post.findByPk(id);
@@ -218,7 +79,7 @@ app.get("/post/:id/comment", requireLogin, async (req, res) => {
   });
 });
 
-app.post("/post/:id/comment", requireLogin, async (req, res) => {
+app.post("/members/post/:id/comment", requireLogin, async (req, res) => {
   const post = req.params.id;
   const { content } = req.body;
   const { id } = req.session.user;

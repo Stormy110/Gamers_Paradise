@@ -1,23 +1,27 @@
 const express = require('express');
 const router = express.Router();
-const { layout } = require('../utils');
-const { requireLogin, logout } = require("../auth");
+const { requireLogin } = require("../auth");
+const { memberController } = require('../controllers');
+const UPLOAD_URL = "../uploads/media/";
+const multer = require("multer");
+const upload = multer({ dest: "public" + UPLOAD_URL });
 
 router
-    .get("/members-about", requireLogin, (req, res) => {
-        res.render("members-about", {
-        locals: {},
-        ...layout,
-        });
-    })
+  .get("/", requireLogin, memberController.member)
 
-    .get("/members-contact", requireLogin, (req, res) => {
-        res.render("members-contact", {
-          locals: {},
-          ...layout,
-        });
-      })
+router
+  .get("/create", requireLogin, )
+  .post("/create", requireLogin, upload.single("media"), )
+    
 
-      .get("/logout", requireLogin, logout);
+
+router
+    .get("/about", requireLogin, memberController.about )
+
+    .get("/contact", requireLogin, memberController.contact)
+
+router
+  .get('/logout', memberController.logout);
+
 
 module.exports = router;
