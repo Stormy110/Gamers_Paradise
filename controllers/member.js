@@ -60,7 +60,7 @@ const profile = async (req, res) => {
       ],
     });
     for (let p of member) {
-      // p.User = await User.findByPk(p.userid);
+      p.User = await User.findByPk(p.userid);
       p.Game = await Game.findByPk(p.gameid)
     }
     console.log(JSON.stringify(member, null, 4));
@@ -68,6 +68,7 @@ const profile = async (req, res) => {
       locals: {
         member,
         user,
+        id
       },
       ...layout,
     });
