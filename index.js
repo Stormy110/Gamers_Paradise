@@ -19,6 +19,7 @@ const upload = multer({ dest: "public" + UPLOAD_URL });
 const Sequelize = require("sequelize");
 
 const { layout } = require("./utils");
+const { homeRouter,userRouter } = require("./routers");
 
 const logger = morgan("dev");
 const hostname = "0.0.0.0";
@@ -52,140 +53,69 @@ app.engine("html", es6Renderer);
 app.set("views", "templates");
 app.set("view engine", "html");
 
-app.get("/", (req, res) => {
-  res.render("home", {
-    locals: {},
-    ...layout,
-  });
-});
+const {
+  errorController
+}= require('./controllers')
 
-app.get("/about", (req, res) => {
-  res.render("about", {
-    locals: {},
-    ...layout,
-  });
-});
+app.use('/', homeRouter) //Has all home items
+app.use('/user', userRouter) // Has SignUp, LogIn, and logOut
 
-app.get("/contact", (req, res) => {
-  res.render("contact", {
-    locals: {},
-    ...layout,
-  });
-});
+// app.get("/login", (req, res) => {
+//   res.render("loginPage", {
+//     locals: {},
+//     ...layout,
+//   });
+// });
 
-app.get("/signup", (req, res) => {
-  res.render("signUpPage", {
-    locals: {},
-    ...layout,
-  });
-});
+// app.post("/login", async (req, res) => {
+//   const { username, password } = req.body;
+//   // const { loginid, password } = req.body;
 
-app.post("/signup", async (req, res) => {
-  const { password, name, email } = req.body;
-  let { username } = req.body;
-  if (username == "" || password == "") {
-    // res.json(["Username or Password is Blank!"]);
-    res.redirect("/errorsignup");
-  } else {
-    const hash = bcrypt.hashSync(password, 10); // auto salt!
-    try {
-      const displayname = username;
-      const dbUsername = username.toLowerCase();
+//   // I need to check the database!
+//   // Is that a valid user?
 
-      const newUser = await User.create({
-        username: dbUsername,
-        hash,
-        name,
-        email,
-        displayname,
-      });
-      console.log(newUser);
+//   // let userEmail = loginid.includes("@") ? loginid : "";
+//   // let userName = !loginid.includes("@") ? loginid : "" ;
 
-      res.redirect("/login");
-    } catch (e) {
-      //res.send("username is taken");
-      if (e.user === "SequelizeUniqueConstraintError") {
-        console.log("Username is Taken. Try Again!");
-        // res.json(["Username is Taken. Try Again!"]);
-      }
-      res.redirect("/takensignup");
-    }
-  }
-});
+//   let finalloginName = username.toLowerCase();
+//   // let finalloginName = loginid.includes("@") ? loginid : loginid;
+//   // console.log(finalloginName);
 
-app.get("/errorsignup", (req, res) => {
-  res.render("errorSignUp", {
-    locals: {
-      error: "Username or Password is Blank!",
-    },
-    ...layout,
-  });
-});
-app.get("/takensignup", (req, res) => {
-  res.render("takenSignUp", {
-    locals: {
-      error: "Username Is Taken. Try Again!",
-    },
-    ...layout,
-  });
-});
-
-app.get("/login", (req, res) => {
-  res.render("loginPage", {
-    locals: {},
-    ...layout,
-  });
-});
-
-app.post("/login", async (req, res) => {
-  const { username, password } = req.body;
-  // const { loginid, password } = req.body;
-
-  // I need to check the database!
-  // Is that a valid user?
-
-  // let userEmail = loginid.includes("@") ? loginid : "";
-  // let userName = !loginid.includes("@") ? loginid : "" ;
-
-  let finalloginName = username.toLowerCase();
-  // let finalloginName = loginid.includes("@") ? loginid : loginid;
-  // console.log(finalloginName);
-
-  const user = await User.findOne({
-    where: {
-      [Op.or]: {
-        username: finalloginName,
-        email: finalloginName,
-      },
-    },
-  });
-  if (user) {
-    // Is that their password?
-    //res.send('we have a user!');
-    const isValid = bcrypt.compareSync(password, user.hash);
-    if (isValid) {
-      req.session.user = {
-        username: user.username,
-        // username
-        id: user.id,
-        // id
-        displayname: user.displayname,
-      };
-      req.session.save(() => {
-        res.redirect("/members");
-        // res.send('that is totally right!');
-      });
-    } else {
-      res.send("boooo wrong password!");
-    }
-  } else {
-    res.send("No user with that name!");
-  }
-  //   res.render("loginPage", {
-  //     locals: {},
-  //   });
-  // res.redirect('/members')
-});
+//   const user = await User.findOne({
+//     where: {
+//       [Op.or]: {
+//         username: finalloginName,
+//         email: finalloginName,
+//       },
+//     },
+//   });
+//   if (user) {
+//     // Is that their password?
+//     //res.send('we have a user!');
+//     const isValid = bcrypt.compareSync(password, user.hash);
+//     if (isValid) {
+//       req.session.user = {
+//         username: user.username,
+//         // username
+//         id: user.id,
+//         // id
+//         displayname: user.displayname,
+//       };
+//       req.session.save(() => {
+//         res.redirect("/members");
+//         // res.send('that is totally right!');
+//       });
+//     } else {
+//       res.send("boooo wrong password!");
+//     }
+//   } else {
+//     res.send("No user with that name!");
+//   }
+//   //   res.render("loginPage", {
+//   //     locals: {},
+//   //   });
+//   // res.redirect('/members')
+// });
 
 // Put the requirelogin function on each route we need instead of having
 // it do every route after the app.use. This way we can more specifically
@@ -551,13 +481,6 @@ app.post("/members/game/search", requireLogin, async (req, res) => {
   }
 });
 
-app.get("/logout", requireLogin, logout);
-
-app.get("/unauthorized", (req, res) => {
-  res.render("unauthorized", {
-    ...layout,
-  });
-});
 //catch all if website doesn't
 app.get("*", (req, res) => {
   res.status(404).send("<h1>Page not found</h1>");
