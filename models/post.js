@@ -15,6 +15,9 @@ module.exports = (sequelize, DataTypes) => {
       Post.belongsTo(models.User, {
         foreignKey: "userid",
       });
+      Post.belongsTo(models.Game, {
+        foreignKey: "gameid",
+      });
       Post.belongsTo(models.User, {
         foreignKey: "username",
       });
@@ -30,6 +33,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       userid: DataTypes.INTEGER,
       username: DataTypes.STRING,
+      gameid: DataTypes.INTEGER,
       title: DataTypes.STRING,
       media: DataTypes.STRING,
       content: DataTypes.STRING,
