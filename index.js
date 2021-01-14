@@ -10,7 +10,7 @@ const app = express();
 const server = http.createServer(app);
 const bcrypt = require("bcryptjs");
 const { Op } = require("sequelize");
-const { User, Comment, Post } = require("./models");
+const { User, Comment, Post, Game } = require("./models");
 const { requireLogin, logout } = require("./auth");
 const UPLOAD_URL = "/uploads/media/";
 const multer = require("multer");
@@ -219,21 +219,15 @@ app.get("/members", requireLogin, async (req, res) => {
         include: User,
       },
       // {
-      //   model: User,
-      //   attributes: ["displayname", "createdAt"],
-      //   // include: User,
-      // },
-    ],
-    // include: [
-    //   {
-    //     model: User,
-    //     attributes: [{ username }],
-    //   },
-    // ],
+      //   model: Game,
+      //   attributes: ["title", "createdAt"],
+      // }
+    ]
   });
 
   for (let p of posts) {
     p.User = await User.findByPk(p.userid);
+    p.Game = await Game.findByPk(p.gameid)
   }
 
   res.render("members", {
@@ -247,9 +241,12 @@ app.get("/members", requireLogin, async (req, res) => {
   });
 });
 
-app.get("/members/create", requireLogin, (req, res) => {
+app.get("/members/create", requireLogin, async(req, res) => {
+  const games = await Game.findAll()
   res.render("createForm", {
-    locals: {},
+    locals: {
+      games
+    },
     ...layout,
   });
 });
@@ -260,7 +257,7 @@ app.post(
   async (req, res) => {
     const { id, username } = req.session.user;
     const { file } = req;
-    const { title, content } = req.body;
+    const { title, content, gameid } = req.body;
     let mediaPic = file ? UPLOAD_URL + file.filename : "";
     const post = await Post.create({
       userid: id,
@@ -268,6 +265,7 @@ app.post(
       title,
       media: mediaPic,
       content,
+      gameid
     });
     res.redirect("/members");
   }
@@ -324,6 +322,10 @@ app.get("/members/profile/:id", requireLogin, async (req, res) => {
       // },
     ],
   });
+  for (let p of member) {
+    // p.User = await User.findByPk(p.userid);
+    p.Game = await Game.findByPk(p.gameid)
+  }
   console.log(JSON.stringify(member, null, 4));
   res.render("profile", {
     locals: {
@@ -488,6 +490,53 @@ app.post("/members/search", requireLogin, async (req, res) => {
       });
       for (let p of posts) {
         p.User = await User.findByPk(p.userid);
+        p.Game = await Game.findByPk(p.gameid)
+      }
+      res.render("search-results", {
+        locals: {
+          posts,
+        },
+        ...layout,
+      });
+    }
+  } catch (err) {
+    console.log(`SEARCH ERROR : ${err}`);
+    res.redirect("/members");
+  }
+});
+
+app.post("/members/game/search", requireLogin, async (req, res) => {
+  const { searchStuff } = req.body;
+
+  try {
+    if (searchStuff) {
+      const game = await Game.findOne({
+        where: Sequelize.where(
+          Sequelize.fn(
+            "concat",
+            Sequelize.col("title") /*Sequelize.col("content")*/
+          ),
+          {
+            [Op.iLike]: "%" + searchStuff + "%",
+          }
+        ),
+      });
+      let gid = game.id;
+      const posts = await Post.findAll({
+        where: {
+          gameid: gid,
+        },
+        include: [
+          {
+            model: Comment,
+            attributes: ["content", "createdAt"],
+            include: User,
+          },
+        ],
+      })
+      for (let p of posts) {
+        p.User = await User.findByPk(p.userid);
+        p.Game = await Game.findByPk(p.gameid)
       }
       res.render("search-results", {
         locals: {

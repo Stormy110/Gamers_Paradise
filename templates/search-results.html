@@ -15,7 +15,10 @@ ${header}
           <h3>${p.User.displayname}</h3>
         </a>
         <br />
-  
+        <a href="/members/game/${p.Game.id}">
+          <h3>${p.Game == null ? "" : p.Game.title}</h3>
+        </a>
+        <br>
         <div class="img-holder">
           ${p.media.includes("/uploads/media/") ? `<img src="${p.media}" alt="${p.User.displayname}'s image" />`:'' }
         </div>

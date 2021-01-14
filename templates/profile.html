@@ -14,7 +14,10 @@ ${header}
         <h3>${user.displayname}</h3>
       </a>
       <br />
-
+      <a href="/members/game/${p.Game.id}">
+        <h3>${p.Game == null ? "" : p.Game.title}</h3>
+      </a>
+      <br>
       <div class="img-holder">
         <img src="${p.media}" alt="${p.username}'s image" />
       </div>
