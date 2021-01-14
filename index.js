@@ -481,6 +481,18 @@ app.post("/members/game/search", requireLogin, async (req, res) => {
   }
 });
 
+app.get('/members/game/:id', requireLogin, async (req,res)=>{
+  const { id } = req.params;
+  const game = await Game.findByPk(id);
+  console.log(game.image)
+  res.render('game-page', {
+      locals: {
+          game
+      },
+      ...layout
+  })
+});
+
 //catch all if website doesn't
 app.get("*", (req, res) => {
   res.status(404).send("<h1>Page not found</h1>");
