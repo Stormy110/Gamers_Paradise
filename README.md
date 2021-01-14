@@ -59,10 +59,14 @@
 <br>
 <h2 align="center"> Database Design </h2>
 
+![Database Model Relationships](./public/images/modelDiagram.png)
 
 <br>
 <h2 align="center"> Diagrams  </h2>
--
+
+![Newsfeed sketch](./public/images/Newsfeed.png)
+
+![Profile sketch](./public/images/Profile.png)
 
 <br>
 <h2 align="center"> Demo of App </h2>
@@ -73,16 +77,20 @@
 
 ### Joshua Lopez
 
-- 
+- [Github](https://github.com/JoshuaNow)
+- [Linkedin](https://www.linkedin.com/in/joshua-lopez-dev/)
 
 ### Ian Storms
 
--
+- [Github](https://github.com/Stormy110)
+- [Linkedin](https://www.linkedin.com/in/ianstorms/)
 
 ### Kevin Tucker
 
--
+- [Github](https://github.com/k5tuck)
+- [Linkedin](https://www.linkedin.com/in/ktuck18/)
 
 ### Shoel Uddin
 
-- 
+- [Github](https://github.com/shoel-uddin)
+- [Linkedin](https://www.linkedin.com/in/shoel-uddin/)
