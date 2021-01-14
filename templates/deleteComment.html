@@ -1,19 +1,17 @@
 ${header}
 <ul class="topnav">
-    <li><a href="/members">Home</a></li>
-    <li><a href="/members-about">About</a></li>
-    <li><a href="/members-contact">Contact</a></li>
-    <li><a href="/logout">Logout</a></li>
-  </ul>
+  <li><a href="/members">Home</a></li>
+  <li><a href="/members-about">About</a></li>
+  <li><a href="/members-contact">Contact</a></li>
+  <li><a href="/logout">Logout</a></li>
+</ul>
 <form method="POST">
-    <h2>
-        Do you really want to delete this comment? ${comment.id}
-        
-    </h2>
-<br>
+  <h2>Do you really want to delete this comment? ${comment.content}</h2>
+  <br />
 
-<input type="submit" value="deleteForever">
-
+  <input type="submit" value="Delete Forever" />
 </form>
+<br />
+<a href="/members"><button>NOOOOO!!!!</button></a>
 
 ${footer}
