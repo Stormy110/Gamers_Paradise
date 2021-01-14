@@ -1,16 +1,37 @@
 ${header}
 <ul class="topnav">
-    <li><a href="/members">Home</a></li>
-    <li><a href="/members-about">About</a></li>
-    <li><a href="/members-contact">Contact</a></li>
-    <li><a href="/logout">Logout</a></li>
-  </ul>
+  <li><a href="/members">Home</a></li>
+  <li><a href="/members-about">About</a></li>
+  <li><a href="/members-contact">Contact</a></li>
+  <li><a href="/logout">Logout</a></li>
+</ul>
 <h1>Search for a Post</h1>
-<form method="POST">
-    <label>
-        Search:
-        <input type="text" name="searchContent" autofocus>
-    </label>
-    <input type="submit" value="Search">
+<form action="/members/search" method="POST">
+  <label>
+    Search by Title:
+    <input
+      type="text"
+      name="searchContent"
+      placeholder="Enter Post Title"
+      autofocus
+    />
+  </label>
+  <input type="submit" value="Search" />
+</form>
+<br />
+<form action="#" method="POST">
+  <label>
+    Search by Game:
+    <input type="text" name="searchContent" placeholder="Enter Game Title" />
+  </label>
+  <input type="submit" value="Search" />
+</form>
+<br />
+<form action="#" method="POST">
+  <label>
+    Search by Genre:
+    <input type="text" name="searchContent" placeholder="Enter Genre Title" />
+  </label>
+  <input type="submit" value="Search" />
 </form>
 ${footer}

@@ -16,7 +16,7 @@ const UPLOAD_URL = "/uploads/media/";
 const multer = require("multer");
 const upload = multer({ dest: "public" + UPLOAD_URL });
 
-const Sequelize = require("sequelize")
+const Sequelize = require("sequelize");
 
 const { layout } = require("./utils");
 
@@ -400,118 +400,107 @@ app.post("/members/post/:id/delete", requireLogin, async (req, res) => {
   res.redirect("/members");
 });
 
-
 app.get("/members/comment/:id/edit", requireLogin, async (req, res) => {
-  const { id } = req.params
-  const comment = await Comment.findByPk(id)
-  const post = await Post.findByPk(comment.postid)
-  const user = await User.findByPk(comment.userid)
+  const { id } = req.params;
+  const comment = await Comment.findByPk(id);
+  const post = await Post.findByPk(comment.postid);
+  const user = await User.findByPk(comment.userid);
   res.render("editComment", {
     locals: {
       comment,
       post,
       user,
     },
-    ...layout
+    ...layout,
   });
-  
 });
 
-
 app.post("/members/comment/:id/edit", requireLogin, async (req, res) => {
-  const { id } = req.params
-  const { content } = req.body
+  const { id } = req.params;
+  const { content } = req.body;
   const updatedComment = await Comment.update(
     {
-      content
-    },{
-    where: {
-      id,
-      userid: req.session.user.id
-    }
-  })
-
-  
-  res.redirect("/members")
-  
-
-})
-
-app.get("/members/comment/:id/delete", requireLogin, async (req, res) => {
-  const {id} = req.params
-  const comment = await Comment.findByPk(id)
-  res.render("deleteComment", {
-    locals: {
-      comment
-      
+      content,
     },
-    ...layout
-  })
-
-})
-
-
-
-app.post("/members/comment/:id/delete", requireLogin, async (req, res) => {
-  const { id } = req.params
-  const deletedComment = await Comment.destroy(
     {
       where: {
         id,
-        userid: req.session.user.id
-      }
-    })
-  res.redirect("/members")
+        userid: req.session.user.id,
+      },
+    }
+  );
+
+  res.redirect("/members");
 });
 
-
-app.get("/members/search", requireLogin, (req,res)=>{
-  res.render('search', {
+app.get("/members/comment/:id/delete", requireLogin, async (req, res) => {
+  const { id } = req.params;
+  const comment = await Comment.findByPk(id);
+  res.render("deleteComment", {
     locals: {
-
+      comment,
     },
-    ...layout
-  })
-})
+    ...layout,
+  });
+});
 
-app.post("/members/search", requireLogin, async (req,res)=>{
+app.post("/members/comment/:id/delete", requireLogin, async (req, res) => {
+  const { id } = req.params;
+  const deletedComment = await Comment.destroy({
+    where: {
+      id,
+      userid: req.session.user.id,
+    },
+  });
+  res.redirect("/members");
+});
+
+app.get("/members/search", requireLogin, (req, res) => {
+  res.render("search", {
+    locals: {},
+    ...layout,
+  });
+});
+
+app.post("/members/search", requireLogin, async (req, res) => {
   const { searchContent } = req.body;
-  
+
   try {
-      if (searchContent) {
-          const posts = await Post.findAll({
-              where:
-                  Sequelize.where(Sequelize.fn("concat",Sequelize.col("title"), /*Sequelize.col("content")*/),{
-                    [Op.iLike]: "%" + searchContent + "%" 
-                  }),
-          
-              include: [
-                {
-                  model: Comment,
-                  attributes: ["content", "createdAt"],
-                  include: User,
-                }
-                
-              ]
-            });
-            for (let p of posts) {
-              p.User = await User.findByPk(p.userid);
-            }
-              res.render("search-results", {
-                  locals: {
-                      posts
-              },
-              ...layout
-          })
+    if (searchContent) {
+      const posts = await Post.findAll({
+        where: Sequelize.where(
+          Sequelize.fn(
+            "concat",
+            Sequelize.col("title") /*Sequelize.col("content")*/
+          ),
+          {
+            [Op.iLike]: "%" + searchContent + "%",
+          }
+        ),
+
+        include: [
+          {
+            model: Comment,
+            attributes: ["content", "createdAt"],
+            include: User,
+          },
+        ],
+      });
+      for (let p of posts) {
+        p.User = await User.findByPk(p.userid);
       }
+      res.render("search-results", {
+        locals: {
+          posts,
+        },
+        ...layout,
+      });
+    }
   } catch (err) {
-      console.log(`SEARCH ERROR : ${err}`);
-      res.redirect("/members")
+    console.log(`SEARCH ERROR : ${err}`);
+    res.redirect("/members");
   }
 });
-  
-
-
 
 app.get("/logout", requireLogin, logout);
 
