@@ -4,7 +4,8 @@
 <br>
 
 <h2 align="center"> Objective/Goals </h2>
-- This web app will allow one to add, modify, and review games.
+- This modern web application is a social media site for gamers, by gamers designed to bring gamers together. The app will allow users to post content, review other users content, and search based off of that content. 
+
 
 <br>
 <h2 align="center"> User Story </h2> 
