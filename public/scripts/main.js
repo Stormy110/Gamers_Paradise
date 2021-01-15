@@ -7,3 +7,6 @@ fetch("/signup", {
     console.log("You have an error");
     console.log(err);
   });
+
+
+  
