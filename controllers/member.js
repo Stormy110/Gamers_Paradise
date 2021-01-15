@@ -70,7 +70,7 @@ const profile = async (req, res) => {
       locals: {
         member,
         user,
-        id
+        id: req.session.user.id
       },
       ...layout,
     });
