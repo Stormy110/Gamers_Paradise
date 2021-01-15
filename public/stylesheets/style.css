@@ -79,16 +79,20 @@ body {
 
   .grid-item-3 img{
   justify-items: center;
-  max-height: 250px;
+  max-height: 150px;
   
 }
   .img-holder {
-  height: 250px;
-  width: 100%;
+  height: 150px;
+  width: 75%;
   display: flex;
   justify-content: center;
   align-items: center;
 
+}
+
+.select {
+  display: inline-block;
 }
 
 

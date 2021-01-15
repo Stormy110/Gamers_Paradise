@@ -1,18 +1,11 @@
 ${header}
-<ul class="topnav">
-    <li><a href="/members">Home</a></li>
-    <li><a href="/members/about">About</a></li>
-    <li><a href="/members/contact">Contact</a></li>
-    <li><a href="/logout">Logout</a></li>
-</ul>
-
 <form method="POST" enctype="multipart/form-data">
     <label >Title 
         <input type="text" name="title" placeholder="enter title" >
     </label>
     <br>
     <label >Game Title
-        <select name="gameid">
+        <select class="select" name="gameid">
             ${games.map(game=> `<option value="${game.id}">${game.title}</option>`)}
         </select>
     </label>
