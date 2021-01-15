@@ -1,5 +1,7 @@
 ${header}
+  <div class="game-page">
   <h1>Search Results:</h1>
+</div>
   <ul class="grid-container">
     ${posts.map(p => { return `
     <li class="grid-item-3 content">
@@ -30,8 +32,8 @@ ${header}
           <li data-comment-id="${c.id}">
             ${c.User ? `<a href="/members/profile/${c.User.id}">${c.User.displayname}</a>` : ''}: ${c.content}
             ${c.User.id == id? `
-              <a href="/members/comment/${c.id}/edit"><button>EDIT POST</button></a>
-              <a href="/members/comment/${c.id}/delete"><button>DELETE POST</button></a>
+              <a href="/members/comment/${c.id}/edit"><button>EDIT COMMENT</button></a>
+              <a href="/members/comment/${c.id}/delete"><button>DELETE COMMENT</button></a>
             ` : ''}
             </li>
           `).join('') : '' }

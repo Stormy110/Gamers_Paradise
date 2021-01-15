@@ -48,11 +48,11 @@ ${header}
 
       <ul >
         ${p.Comments ? p.Comments.map(c => `
-        <li class="comments" data-comment-id="${c.id}">
+        <li data-comment-id="${c.id}">
           ${c.User ? `<a href="/members/profile/${c.User.id}">${c.User.displayname}</a>` : ''}: ${c.content}
           ${c.User.id == id? `
-            <a href="/members/comment/${c.id}/edit"><button>EDIT POST</button></a>
-            <a href="/members/comment/${c.id}/delete"><button>DELETE POST</button></a>
+            <a href="/members/comment/${c.id}/edit"><button>EDIT COMMENT</button></a>
+            <a href="/members/comment/${c.id}/delete"><button>DELETE COMMENT</button></a>
           ` : ''}
           </li>
         `).join('') : '' }
