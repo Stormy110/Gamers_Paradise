@@ -1,4 +1,5 @@
 ${header}
+<div class="game-page">
 <form method="POST" action="/members/post/${post.id}/edit" enctype="multipart/form-data">
     <label >Title 
         <input type="text" name="title" value="${post.title}">
@@ -20,6 +21,7 @@ ${header}
     <br>
     <input type="submit" value="POST" >
 </form>
+</div>
 <script>
     console.log(post.id)
 </script>
