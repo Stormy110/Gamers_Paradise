@@ -1,20 +1,34 @@
 ${header}
-<ul class="topnav">
+
+<!-- <ul class="topnav">
   <li><a href="/members">Home</a></li>
   <li><a href="/members/about">About</a></li>
   <li><a href="/members/contact">Contact</a></li>
   <li><a href="/members/logout">Logout</a></li>
-</ul>
-<h1>Welcome to the members page ${displayname}</h1>
-
-<a href="/members/create"><button>ADD POST</button></a>
-<a href="/members/profile/${id}"><button>VIEW PROFILE</button></a>
-<a href="/members/search"><button>SEARCH</button></a>
+</ul> -->
+<!-- delete this -->
+<div class="container px-4">
+  <h1>Welcome to the members page ${displayname}</h1>
+  <a href="/members/create"><button>ADD POST</button></a>
+  <a href="/members/profile/${id}"><button>VIEW PROFILE</button></a>
+  <a href="/members/search"><button>SEARCH</button></a>
+    <div class="row gx-5">
+      <div class="col">
+        <div class="p-3 border"></div>
+       </div>
+      
+       <div class="col">
+         <div class="p-3 border"></div>
+       </div>
+      
+    </div>
+</div>
+<!--  delete this -->
 <br />
 <br />
-<ul>
+<ul class="grid-container">
   ${posts.map(p => { return `
-  <li>
+  <li class="grid-item-3 content">
     <div class="postDiv">
       <h2>${p.title}</h2>
       <a href="/members/profile/${p.userid}">
@@ -25,9 +39,11 @@ ${header}
         <h3>${p.Game == null ? "" : p.Game.title}</h3>
       </a>
       <br>
-      <div class="img-holder">
-        ${p.media.includes("/uploads/media/") ? `<img src="${p.media}" alt="${p.User.displayname}'s image" />`:'' }
-      </div>
+      
+      
+        ${p.media.includes("/uploads/media/") ? `<div class="img-holder"><img src="${p.media}" class="image fit" alt="${p.User.displayname}'s image" />`:'' }
+      
+     </div>
       <p>${p.content}</p>
       <a href="/members/post/${p.id}/comment"><button>ADD COMMENT</button></a>
       
