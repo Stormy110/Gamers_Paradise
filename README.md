@@ -46,7 +46,7 @@
   - Verifying email or username to be unique regardless of capitalization
   - Calling displayname instead of username to show up on the pages.
 
-- Thursday 1/14/21:
+- Wednesday 1/13/21:
   - Trying to attach the game model and the post model
   - Would not send the game information with each post because the relationship was not there
   - Added a gameid in the post model as a foreign key and used it to find the game title for each post and used the gameid as the url to link each game title to that game's display page
@@ -55,6 +55,10 @@
   - Having some problems with CSS and Grid
   - Content not displaying correctly
   - Fixed it with trial and error
+
+- Friday 1/15/21:
+  - Had some CSS styling issues where things would not line up and overlay eachother
+  - AWS server loadup
 
 <br>
 <h2 align="center"> Database Design </h2>
