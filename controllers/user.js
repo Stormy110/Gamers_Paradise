@@ -30,12 +30,14 @@ const processNewUser = async (req, res) => {
         });
         console.log(newUser);
   
-        res.redirect("/login");
+        res.redirect("/user/login");
       } catch (e) {
+        console.log(e)
         //res.send("username is taken");
-        if (e.user === "SequelizeUniqueConstraintError") {
+        if (e == "SequelizeUniqueConstraintError") {
           console.log("Username is Taken. Try Again!");
           // res.json(["Username is Taken. Try Again!"]);
+          res.redirect("/takensignup");
         }
         res.redirect("/takensignup");
       }

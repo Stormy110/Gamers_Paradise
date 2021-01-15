@@ -26,7 +26,7 @@
   <p>If you have already Signed Up Please Click <a href="/login">HERE</a></p>
 </div>
 
-<!-- <script src="/scripts/main.js"></script> -->
+ <script src="/scripts/main.js"></script> -->
 
 
 <!-- testing here boot strap -->
@@ -48,7 +48,7 @@
     
 
     <!-- Bootstrap core CSS -->
-<link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--<link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">-->
 
     <style>
       .bd-placeholder-img {
@@ -73,25 +73,25 @@
   <body class="text-center">
     
 <main class="form-signin">
-  <form method="POST">
+  <form action="/user/signup" method="POST">
     
     <h1 class="h3 mb-3 fw-normal">Sign Up Here</h1>
-    <label for="inputEmail" class="visually-hidden" > Username</label>
-    <input type="text" name="username" placeholder="Username" id="inputEmail" class="form-control" placeholder="Login Username" required autofocus>
+    <label class="visually-hidden" > Username</label>
+    <input type="text" name="username" placeholder="Username"  class="form-control" placeholder="Login Username" required autofocus>
     
-    <label for="inputPassword" class="visually-hidden">Password</label>
-    <input type="password" id="inputPassword" class="form-control" name="password" placeholder="Password" required>
+    <label class="visually-hidden">Password</label>
+    <input type="password"  class="form-control" name="password" placeholder="Password" required>
     
-    <label for="inputEmail" class="visually-hidden" > Display name</label>
-    <input type="text" name="displayname" placeholder="Display Name" id="inputEmail" class="form-control" placeholder="displayname" required autofocus>
+    <label class="visually-hidden" > Display name</label>
+    <input type="text" name="displayname" placeholder="Display Name"  class="form-control" placeholder="displayname" required autofocus>
 
-    <label for="inputEmail" class="visually-hidden">Email address</label>
-    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required>
+    <label class="visually-hidden">Email address</label>
+    <input type="text" name="email"  class="form-control" placeholder="Email address" required>
 
-    <label for="inputEmail" class="visually-hidden">name</label>
-    <input type="name" name="name" id="inputEmail" class="form-control" placeholder="Your name" required>
+    <label  class="visually-hidden">name</label>
+    <input type="text" name="name" class="form-control" placeholder="Your name" required>
 
-    <button class="w-100 btn btn-lg btn-primary" type="submit" value="Login">Sign Up</button>
+    <input class="w-100 btn btn-lg btn-primary" type="submit" value="Signup"/>
     
     
     </form>
