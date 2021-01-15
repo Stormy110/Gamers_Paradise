@@ -1,17 +1,19 @@
 ${header}
   <h1>Search Results:</h1>
-  <ul>
+  <ul class="grid-container">
     ${posts.map(p => { return `
-    <li>
-      <div class="postDiv">
-        <h2>${p.title}</h2>
+    <li class="grid-item-3 content">
+      <div>
+        <div class="postDiv">
+        <h2 class="post-title">${p.title}</h2>
         <a href="/members/profile/${p.userid}">
-          <h3>${p.User.displayname}</h3>
+          <h3 class="post-user">${p.User.displayname}</h3>
         </a>
         <br />
         <a href="/members/game/${p.Game == null ? '' : p.Game.id}">
-          <h3>${p.Game == null ? "" : p.Game.title}</h3>
+          <h3 class="game-title">${p.Game == null ? "" : p.Game.title}</h3>
         </a>
+      </div>
         <br>
         <div class="img-holder">
           ${p.media.includes("/uploads/media/") ? `<img src="${p.media}" alt="${p.User.displayname}'s image" />`:'' }
