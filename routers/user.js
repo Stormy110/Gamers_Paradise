@@ -4,7 +4,7 @@ const router = express.Router();
 
 
 router
-    .get('/signup', userController.newUser)
+    .get("/signup", userController.newUser)
 
     .post("/signup", userController.processNewUser)
 
