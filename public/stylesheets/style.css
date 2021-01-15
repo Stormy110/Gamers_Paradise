@@ -113,6 +113,9 @@ input[type=submit] {
   width: 10em !important;
 }
  
+input[placeholder] {
+  color:black !important;
+}
 .members-heading {
   background-color: silver;;
   border: solid black 3px;  
@@ -154,6 +157,9 @@ input[type=submit] {
   text-align: center;
 }
 
+label {
+  color: black !important;
+}
 
   /* .grid-item-3 img{
   justify-items: center;

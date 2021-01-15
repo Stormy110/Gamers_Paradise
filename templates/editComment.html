@@ -1,7 +1,7 @@
 ${header}
 <div class="game-page">
 <h1>Comment on: ${post.title}</h1>
-<div>
+<div class="img-holder">
     ${post.media.includes("/uploads/media/") ? `<img src="${post.media}" alt="${user.displayname}'s image" />`:'' }
 </div>
 <p>${post.content}</p>
