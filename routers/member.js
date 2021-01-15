@@ -1,10 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const { requireLogin } = require("../auth");
-const { memberController } = require('../controllers');
+const {
+  requireLogin
+} = require("../auth");
+const {
+  memberController
+} = require('../controllers');
 const UPLOAD_URL = "/uploads/media/";
 const multer = require("multer");
-const upload = multer({ dest: "public" + UPLOAD_URL });
+const upload = multer({
+  dest: "public" + UPLOAD_URL
+});
 
 router
   .get("/", requireLogin, memberController.member)
@@ -15,15 +21,12 @@ router
   .post("/create", requireLogin, upload.single("media"), memberController.processPost)
 
   .get("/post/:id/edit", requireLogin, memberController.editPost)
-  .post(
-    "/members/post/:id/edit",
-    requireLogin,
-    upload.single("media"), memberController.processEditPost)
+  .post("/post/:id/edit", requireLogin, upload.single("media"), memberController.processEditPost)
 
   .get("/post/:id/delete", requireLogin, memberController.deletePost)
-  .post("/members/post/:id/delete", requireLogin, memberController.processDeletePost)
+  .post("/post/:id/delete", requireLogin, memberController.processDeletePost)
 
-router  
+router
   .get("/post/:id/comment", requireLogin, memberController.createComment)
   .post("/post/:id/comment", requireLogin, memberController.processComment)
 
@@ -42,9 +45,9 @@ router
   .get('/game/:id', requireLogin, memberController.game)
 
 router
-    .get("/about", requireLogin, memberController.about )
+  .get("/about", requireLogin, memberController.about)
 
-    .get("/contact", requireLogin, memberController.contact)
+  .get("/contact", requireLogin, memberController.contact)
 
 router
   .get('/logout', memberController.logout);
