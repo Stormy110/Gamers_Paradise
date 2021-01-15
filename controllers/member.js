@@ -1,4 +1,6 @@
 const { layout } = require('../utils');
+const Sequelize = require('sequelize');
+const { Op } = require("sequelize");
 const { User, Comment, Post, Game } = require("../models");
 const UPLOAD_URL = "/uploads/media/";
 
@@ -257,6 +259,7 @@ const search = (req, res) => {
 
 const processSearch= async (req, res) => {
   const { searchContent } = req.body;
+  const { id } = req.session.user;
 
   try {
     if (searchContent) {
@@ -283,9 +286,11 @@ const processSearch= async (req, res) => {
         p.User = await User.findByPk(p.userid);
         p.Game = await Game.findByPk(p.gameid)
       }
+      console.log(posts)
       res.render("search-results", {
         locals: {
           posts,
+          id
         },
         ...layout,
       });
@@ -298,6 +303,7 @@ const processSearch= async (req, res) => {
 
 const ProcessGameSearch= async (req, res) => {
   const { searchStuff } = req.body;
+  const { id } = req.session.user;
 
   try {
     if (searchStuff) {
@@ -332,6 +338,7 @@ const ProcessGameSearch= async (req, res) => {
       res.render("search-results", {
         locals: {
           posts,
+          id
         },
         ...layout,
       });
